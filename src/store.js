@@ -79,13 +79,14 @@ export default new Vuex.Store({
       const turn = state.data.turns[id];
       if (turn) {
         turn.isActive = false;
+        turn.isPlayed = true;
         state.currentTurn = null;
       }
     },
     resetGameData(state) {
       state.data = {
-        teams: [],
-        turns: [],
+        teams: {},
+        turns: {},
       };
     },
   },
@@ -100,7 +101,7 @@ export default new Vuex.Store({
         Object.keys(state.data.teams).forEach(id => commit('registerTurn', id));
       }
     },
-    async startGame({ dispatch, state, commit }) {
+    async start({ dispatch, state, commit }) {
       const { teamCount, turnsPerTeam } = state.config;
       await dispatch('registerTeams', teamCount);
       await dispatch('registerTurns', turnsPerTeam);
@@ -110,9 +111,15 @@ export default new Vuex.Store({
     nextTurn({ state, commit }) {
       const { currentTurn } = state;
       commit('endTurn', currentTurn);
-      commit('startTurn', currentTurn + 1);
+      const turns = Object.values(state.data.turns);
+      const pendingTurns = turns.filter(turn => !turn.isPlayed);
+      if (pendingTurns.length) {
+        commit('startTurn', currentTurn + 1);
+      } else {
+        commit('setGameState', GAME_STATES.ENDED);
+      }
     },
-    resetGame({ commit }) {
+    restart({ commit }) {
       commit('resetGameData');
       commit('setConfig', {
         mode: null,

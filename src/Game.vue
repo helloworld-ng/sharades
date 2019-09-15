@@ -6,8 +6,9 @@
     <turn v-else-if="is('IN_PROGRESS')" />
     <stats v-else-if="is(['PAUSED', 'ENDED'])" />
     <div>
-      <button @click="startGame()" v-if="is('IDLE')">Start Game</button>
+      <button @click="start()" v-if="is('IDLE')">Start Game</button>
       <button @click="nextTurn()" v-if="is('IN_PROGRESS')">Next Turn</button>
+      <button @click="restart()" v-if="is('ENDED')">Restart Game</button>
     </div>
   </div>
 </template>
@@ -37,8 +38,9 @@ export default {
   },
   methods: {
     ...mapActions([
-      'startGame',
+      'start',
       'nextTurn',
+      'restart',
     ]),
     is(value) {
       if (typeof value === 'object') {
