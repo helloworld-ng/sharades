@@ -1,5 +1,7 @@
 <template>
-  <div class="options"></div>
+  <div class="options">
+    Options
+  </div>
 </template>
 
 <script>
