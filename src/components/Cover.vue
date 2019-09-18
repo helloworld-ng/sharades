@@ -72,7 +72,7 @@ export default {
   }
   &.to-left, &.to-right, &.to-top {
     &::before, &::after {
-      animation-duration: 400ms;
+      animation-duration: 1s;
     }
   }
   &.to-left, &.to-right {
