@@ -3,5 +3,5 @@ export default {
   NOLLYWOOD: 'Nollywood',
   BOOKS: 'Books',
   PLACES: 'Places',
-  PIDGIN_AND_SLANGS: 'Pidgin+Slangs',
+  PIDGIN_AND_SLANGS: 'Pidgin & Slangs',
 };

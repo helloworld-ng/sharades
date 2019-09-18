@@ -106,8 +106,7 @@ export default {
     },
     chooseRandomCategory() {
       const randomIndex = Math.ceil(Math.random(0, 1) * this.categories.length) - 1;
-      this.config.category = this.categories[randomIndex];
-      this.slideTo('CONFIG');
+      this.setCategory(this.categories[randomIndex].name);
     },
     setConfig() {},
   },

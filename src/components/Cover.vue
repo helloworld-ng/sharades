@@ -41,7 +41,7 @@ export default {
       const newIndex = this.currentIndex + 1;
       this.currentIndex = (newIndex >= screenCount) ? 0 : newIndex;
       this.$emit('newBackground', this.currentScreen.background);
-    }, 1800);
+    }, 1500);
   },
   destroyed() {
     window.clearInterval(this.player);
@@ -74,7 +74,12 @@ export default {
     content: '';
     position: absolute;
   }
-  &.to-left, &.to-right, &.to-top {
+  &.to-left, &.to-right {
+    &::before, &::after {
+      animation-duration: .5s;
+    }
+  }
+  &.to-top {
     &::before, &::after {
       animation-duration: .6s;
     }
