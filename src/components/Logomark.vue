@@ -16,7 +16,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import '../assets/colors.scss';
+@import '../assets/colours.scss';
 
 .logomark {
   text-align: center;
