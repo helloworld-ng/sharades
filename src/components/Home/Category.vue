@@ -28,7 +28,7 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../assets/colours.scss';
+@import '../../assets/colours.scss';
 
 .category {
   ul {

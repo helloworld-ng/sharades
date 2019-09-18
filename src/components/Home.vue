@@ -40,10 +40,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Wordmark from './Wordmark.vue';
-import RoundButton from './RoundButton.vue';
-import Cover from './Cover.vue';
-import Category from './Category.vue';
+import Wordmark from './Shared/Wordmark.vue';
+import RoundButton from './Shared/RoundButton.vue';
+import Cover from './Home/Cover.vue';
+import Category from './Home/Category.vue';
 
 export default {
   name: 'Home',

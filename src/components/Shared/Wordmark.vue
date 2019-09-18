@@ -1,6 +1,6 @@
 <template>
   <div class="wordmark">
-    <div><img src="../assets/images/Yellow-Sharades-Wordmark.svg"></div>
+    <div><img src="../../assets/images/Yellow-Sharades-Wordmark.svg"></div>
     <span>{{sign || 'Nigerian Charades'}}</span>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/colours.scss';
+@import '../../assets/colours.scss';
 
 .wordmark {
   text-align: center;

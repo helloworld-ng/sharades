@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../assets/colours.scss';
+@import '../../assets/colours.scss';
 
 .cover {
   height: 100%;
