@@ -5,21 +5,25 @@
     </div>
     <section class="frame">
       <header>
-        <wordmark />
+        <wordmark :sign="wordmarkText" />
       </header>
       <section class="body">
-        <transition-group name="fade">
+        <transition-group>
           <div key="nav" id="nav" v-if="activeScreen === screens.NAVIGATION">
             <div class="centered">
-              <round-button sign="play" :colour="colour" @click="chooseCategory" />
+              <round-button sign="play" :colour="colour" @click="showCategories" />
             </div>
             <div class="links">
               <a>About</a>
               <a>Tutorial</a>
             </div>
           </div>
-          <div key="category" id="category" v-if="activeScreen === screens.CATEGORY"></div>
-          <div key="config" id="config" v-if="activeScreen === screens.CONFIG"></div>
+          <div key="category" id="category" v-if="activeScreen === screens.CATEGORY">
+            <category @choose="setCategory" />
+          </div>
+          <div key="config" id="config" v-if="activeScreen === screens.CONFIG">
+            Config
+          </div>
           <div key="about" id="about" v-if="activeScreen === screens.ABOUT"></div>
           <div key="tutorial" id="tutorial" v-if="activeScreen === screens.TUTORIAL"></div>
         </transition-group>
@@ -32,6 +36,7 @@
 import Wordmark from './Wordmark.vue';
 import RoundButton from './RoundButton.vue';
 import Cover from './Cover.vue';
+import Category from './Category.vue';
 
 export default {
   name: 'Home',
@@ -39,6 +44,7 @@ export default {
     Wordmark,
     RoundButton,
     Cover,
+    Category,
   },
   data() {
     const screens = {
@@ -50,20 +56,32 @@ export default {
     };
 
     return {
+      wordmarkText: null,
       introPlayed: false,
       colour: null,
       pauseAnimation: false,
       screens,
       activeScreen: screens.NAVIGATION,
+      config: {},
     };
   },
   methods: {
     setColour(colour) {
       setTimeout(() => { this.colour = colour; }, 150);
     },
-    chooseCategory() {
+    showCategories() {
+      this.wordmarkText = 'Choose Category';
       this.pauseAnimation = true;
+      this.activeScreen = this.screens.CATEGORY;
     },
+    setCategory(category) {
+      this.config.category = category;
+      this.showConfig();
+    },
+    showConfig() {
+      this.activeScreen = this.screens.CONFIG;
+    },
+    setConfig() {},
   },
 };
 </script>

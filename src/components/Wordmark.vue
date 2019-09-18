@@ -1,7 +1,7 @@
 <template>
   <div class="wordmark">
     <div><img src="../assets/images/Yellow-Sharades-Wordmark.svg"></div>
-    <span>{{title || 'Nigerian Charades'}}</span>
+    <span>{{sign || 'Nigerian Charades'}}</span>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
   name: 'Wordmark',
   props: {
-    title: String,
+    sign: String,
   },
 };
 </script>

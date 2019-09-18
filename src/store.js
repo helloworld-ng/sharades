@@ -100,7 +100,8 @@ export default new Vuex.Store({
       }
     },
     async start({ dispatch, state, commit }) {
-      const { teamCount, turnsPerTeam } = state.config;
+      const { category, teamCount, turnsPerTeam } = state.config;
+      commit('setConfig', { category });
       await dispatch('registerTeams', teamCount);
       await dispatch('registerTurns', turnsPerTeam);
       commit('setGameState', GAME_STATES.IN_PROGRESS);
