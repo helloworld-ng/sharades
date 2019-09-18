@@ -1,33 +1,22 @@
 <template>
-  <div class="game">
+  <div class="app">
     <home v-if="is('IDLE')" />
-    <category v-else-if="is('CHOOSE_CATEGORY')" />
-    <options v-else-if="is('CHOOSE_OPTIONS')" />
-    <turn v-else-if="is('IN_PROGRESS')" />
+    <game v-else-if="is('IN_PROGRESS')" />
     <stats v-else-if="is(['PAUSED', 'ENDED'])" />
-    <div>
-      <button @click="start()" v-if="is('IDLE')">Start Game</button>
-      <button @click="nextTurn()" v-if="is('IN_PROGRESS')">Next Turn</button>
-      <button @click="restart()" v-if="is('ENDED')">Restart Game</button>
-    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import Home from './components/Home.vue';
-import Category from './components/Category.vue';
-import Options from './components/Options.vue';
-import Turn from './components/Turn.vue';
+import Game from './components/Game.vue';
 import Stats from './components/Stats.vue';
 
 export default {
-  name: 'game',
+  name: 'app',
   components: {
     Home,
-    Category,
-    Options,
-    Turn,
+    Game,
     Stats,
   },
   computed: {
@@ -54,7 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
-.game {
+.app {
   position: fixed;
   top: 0;
   left: 0;

@@ -1,44 +1,68 @@
 <template>
   <section class="home">
     <div class="background">
-      <cover @newBackground="setColour" />
+      <cover @newBackground="setColour" :paused="pauseAnimation" />
     </div>
-    <div class="frame">
-      <div class="top">
-        <game-title />
-      </div>
-      <div class="middle">
-        <game-button sign="play" :colour="colour" />
-      </div>
-      <div class="bottom">
-        <a>About</a>
-        <a>Gameplay</a>
-      </div>
-    </div>
+    <section class="frame">
+      <header>
+        <wordmark />
+      </header>
+      <section class="body">
+        <transition-group name="fade">
+          <div key="nav" id="nav" v-if="activeScreen === screens.NAVIGATION">
+            <div class="centered">
+              <round-button sign="play" :colour="colour" @click="chooseCategory" />
+            </div>
+            <div class="links">
+              <a>About</a>
+              <a>Tutorial</a>
+            </div>
+          </div>
+          <div key="category" id="category" v-if="activeScreen === screens.CATEGORY"></div>
+          <div key="config" id="config" v-if="activeScreen === screens.CONFIG"></div>
+          <div key="about" id="about" v-if="activeScreen === screens.ABOUT"></div>
+          <div key="tutorial" id="tutorial" v-if="activeScreen === screens.TUTORIAL"></div>
+        </transition-group>
+      </section>
+    </section>
   </section>
 </template>
 
 <script>
-import GameTitle from './GameTitle.vue';
-import GameButton from './GameButton.vue';
+import Wordmark from './Wordmark.vue';
+import RoundButton from './RoundButton.vue';
 import Cover from './Cover.vue';
 
 export default {
   name: 'Home',
   components: {
-    GameTitle,
-    GameButton,
+    Wordmark,
+    RoundButton,
     Cover,
   },
   data() {
+    const screens = {
+      NAVIGATION: 0,
+      CATEGORY: 1,
+      CONFIG: 2,
+      ABOUT: 3,
+      TUTORIAL: 4,
+    };
+
     return {
       introPlayed: false,
       colour: null,
+      pauseAnimation: false,
+      screens,
+      activeScreen: screens.NAVIGATION,
     };
   },
   methods: {
     setColour(colour) {
       setTimeout(() => { this.colour = colour; }, 150);
+    },
+    chooseCategory() {
+      this.pauseAnimation = true;
     },
   },
 };
@@ -58,25 +82,33 @@ export default {
     top: 0;
     left: 0;
   }
-  .frame {
+  .frame, .body {
     display: flex;
     flex-direction: column;
     height: 100%;
     position: relative;
     z-index: 2;
-    .middle {
-      flex: 1;
+  }
+  .body {
+    > span, > span > div {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      height: 100%;
     }
-    .bottom {
-      a {
-        color: $yellow;
-        &:last-child {
-          float: right;
-        }
-      }
+  }
+  .centered {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.links {
+  a {
+    color: $yellow;
+    &:last-child {
+      float: right;
     }
   }
 }

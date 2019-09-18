@@ -7,6 +7,9 @@
 <script>
 export default {
   name: 'Cover',
+  props: {
+    paused: Boolean,
+  },
   data() {
     return {
       currentIndex: 0,
@@ -34,6 +37,7 @@ export default {
     this.$emit('newBackground', this.currentScreen.background);
     const screenCount = this.sequence.length;
     this.player = setInterval(() => {
+      if (this.paused) return;
       const newIndex = this.currentIndex + 1;
       this.currentIndex = (newIndex >= screenCount) ? 0 : newIndex;
       this.$emit('newBackground', this.currentScreen.background);

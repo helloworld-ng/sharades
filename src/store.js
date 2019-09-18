@@ -6,8 +6,6 @@ Vue.use(Vuex);
 
 const GAME_STATES = {
   IDLE: 0,
-  CHOOSE_CATEGORY: 1,
-  CHOOSE_OPTIONS: 2,
   IN_PROGRESS: 3,
   PAUSED: 4,
   ENDED: 5,

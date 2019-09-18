@@ -1,5 +1,5 @@
 <template>
-  <div class="turn">
+  <div class="game">
     Turn {{ currentTurn.id }}
   </div>
 </template>
@@ -8,7 +8,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Turn',
+  name: 'Game',
   computed: {
     ...mapGetters([
       'currentTurn',

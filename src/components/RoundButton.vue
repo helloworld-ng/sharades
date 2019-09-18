@@ -1,5 +1,5 @@
 <template>
-  <a :class="className">
+  <a :class="className" @click="$emit('click')">
     {{ sign }}
   </a>
 </template>
