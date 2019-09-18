@@ -6,14 +6,14 @@
 
 <script>
 export default {
-  name: 'Door',
+  name: 'GameButton',
   props: {
     sign: String,
     colour: String,
   },
   computed: {
     className() {
-      return `door ${this.colour}`;
+      return `button ${this.colour}`;
     },
   },
 };
@@ -22,7 +22,7 @@ export default {
 <style scoped lang="scss">
 @import '../assets/colours.scss';
 
-.door {
+.button {
   display: block;
   width: 150px;
   height: 150px;

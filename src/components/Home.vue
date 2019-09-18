@@ -5,10 +5,10 @@
     </div>
     <div class="frame">
       <div class="top">
-        <logomark />
+        <game-title />
       </div>
       <div class="middle">
-        <door sign="play" :colour="colour" />
+        <game-button sign="play" :colour="colour" />
       </div>
       <div class="bottom">
         <a>About</a>
@@ -19,15 +19,15 @@
 </template>
 
 <script>
-import Logomark from './Logomark.vue';
-import Door from './Door.vue';
+import GameTitle from './GameTitle.vue';
+import GameButton from './GameButton.vue';
 import Cover from './Cover.vue';
 
 export default {
   name: 'Home',
   components: {
-    Logomark,
-    Door,
+    GameTitle,
+    GameButton,
     Cover,
   },
   data() {
