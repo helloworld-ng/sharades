@@ -34,7 +34,7 @@ export default {
   ul {
     list-style: none;
     text-align: center;
-    margin: 50px 0;
+    margin: 30px 0;
     padding: 0;
     > li {
       margin-bottom: 15px;
@@ -43,7 +43,7 @@ export default {
         font-family: 'Helvetica Ultra Compressed';
         font-weight: normal;
         letter-spacing: 0;
-        font-size: 45px;
+        font-size: 55px;
       }
     }
   }
