@@ -33,6 +33,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-family: 'Helvetica Ultra Compressed';
+  font-weight: normal;
   font-size: 48px;
   &.green {
     color: $green;
