@@ -32,7 +32,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Helvetica Ultra Compressed';
+  font-family: 'Helvetica Ultra Compressed', sans-serif;
   font-weight: normal;
   font-size: 48px;
   &.green {
