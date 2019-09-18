@@ -72,7 +72,7 @@ export default {
   }
   &.to-left, &.to-right, &.to-top {
     &::before, &::after {
-      animation-duration: 1s;
+      animation-duration: .6s;
     }
   }
   &.to-left, &.to-right {
@@ -99,28 +99,16 @@ export default {
       left: 50%;
     }
   }
-  &.to-left {
-    &::before, &::after {
-      animation-name: to-left;
-      transform: translateX(-100%);
-    }
-    &::before {
-      animation-timing-function: ease-in;
-    }
-    &::after {
-      animation-timing-function: ease-out;
-    }
-  }
   &.to-right {
     &::before, &::after {
       animation-name: to-right;
       transform: translateX(100%);
     }
     &::before {
-      animation-timing-function: ease-in;
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
     &::after {
-      animation-timing-function: ease-out;
+      animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
     }
   }
   &.to-top {
@@ -129,10 +117,10 @@ export default {
       transform: translateY(-100%);
     }
     &::before {
-      animation-timing-function: ease-in;
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
     &::after {
-      animation-timing-function: ease-out;
+      animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
     }
   }
   &.blue-lines {
