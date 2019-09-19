@@ -5,7 +5,7 @@
     </div>
     <section class="frame">
       <header>
-        <wordmark :sign="wordmarkText" />
+        <wordmark :sign="wordmarkText" :paused="animationIsPaused" />
       </header>
       <section class="body">
         <transition :name="screenTransition" mode="out-in">
@@ -70,8 +70,8 @@ export default {
       activeScreen: screens.WELCOME,
       screenTransition: null,
       backgroundAnimation: null,
-      animationIsPaused: false,
-      animationSequenceIndex: 0,
+      currentAnimationIndex: 0,
+      animationDuration: 2500,
     };
   },
   computed: {
@@ -84,7 +84,10 @@ export default {
       return Object.values(this.allCategories);
     },
     currentAnimation() {
-      return this.animationSequence[this.animationSequenceIndex];
+      return this.animationSequence[this.currentAnimationIndex];
+    },
+    animationIsPaused() {
+      return this.activeScreen !== this.screens.WELCOME;
     },
     wordmarkText() {
       switch (this.activeScreen) {
@@ -119,9 +122,9 @@ export default {
     const screenCount = this.animationSequence.length;
     this.backgroundAnimation = setInterval(() => {
       if (this.animationIsPaused) return;
-      const nextSlide = this.animationSequenceIndex + 1;
-      this.animationSequenceIndex = (nextSlide >= screenCount) ? 0 : nextSlide;
-    }, 2500);
+      const nextSlide = this.currentAnimationIndex + 1;
+      this.currentAnimationIndex = (nextSlide < screenCount) ? nextSlide : 0;
+    }, this.animationDuration);
   },
   destroyed() {
     window.clearInterval(this.backgroundAnimation);
