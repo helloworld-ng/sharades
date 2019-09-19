@@ -13,6 +13,7 @@
 export default {
   name: 'Wordmark',
   props: {
+    sign: String,
     paused: Boolean,
   },
   data() {
