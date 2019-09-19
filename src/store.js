@@ -41,6 +41,7 @@ export default new Vuex.Store({
       if (!state.currentTurn) return null;
       return state.data.turns[state.currentTurn];
     },
+    config: state => state.config,
   },
   mutations: {
     setGameState(state, gameState) {
@@ -48,9 +49,7 @@ export default new Vuex.Store({
     },
     setConfig(state, payload) {
       Object.keys(payload).forEach((property) => {
-        if (state.config[property]) {
-          state.config[property] = payload[property];
-        }
+        state.config[property] = payload[property];
       });
     },
     registerTeam(state) {
@@ -89,6 +88,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    setConfig({ commit }, payload) {
+      commit('setConfig', payload);
+    },
     async registerTeams({ commit }, teamCount) {
       for (let i = 1; i <= teamCount; i += 1) {
         commit('registerTeam');
@@ -100,8 +102,7 @@ export default new Vuex.Store({
       }
     },
     async start({ dispatch, state, commit }) {
-      const { category, teamCount, turnsPerTeam } = state.config;
-      commit('setConfig', { category });
+      const { teamCount, turnsPerTeam } = state.config;
       await dispatch('registerTeams', teamCount);
       await dispatch('registerTurns', turnsPerTeam);
       commit('setGameState', GAME_STATES.IN_PROGRESS);

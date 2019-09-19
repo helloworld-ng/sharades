@@ -1,10 +1,14 @@
 <template>
-  <div class="category">
+  <div class="config">
     <ul>
-      <li v-for="cat in categories" :key="cat.name">
-        <a @click="$emit('choose', cat.name)">
-          {{ cat.name }}
-        </a>
+      <li>
+        <toggle label="teams" v-model="config.teams" />
+      </li>
+      <li>
+        <toggle label="turns" v-model="config.turnsPerTeam" />
+      </li>
+      <li>
+        <toggle label="mode" v-model="config.turnsPerTeam" />
       </li>
     </ul>
   </div>
@@ -12,16 +16,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import Toggle from '../Config/Toggle.vue';
 
 export default {
-  name: 'Category',
+  name: 'Config',
+  components: {
+    Toggle,
+  },
   computed: {
     ...mapGetters([
-      'allCategories',
+      'config',
     ]),
-    categories() {
-      return Object.values(this.allCategories).map(cat => ({ name: cat }));
-    },
   },
 };
 </script>
@@ -30,21 +35,12 @@ export default {
 <style scoped lang="scss">
 @import '../../assets/colours.scss';
 
-.category {
+.config {
   ul {
     list-style: none;
-    text-align: center;
-    margin: 30px 0;
     padding: 0;
-    > li {
-      margin-bottom: 15px;
-      a {
-        color: $yellow;
-        font-family: 'Helvetica Ultra Compressed';
-        font-weight: normal;
-        letter-spacing: 0;
-        font-size: 55px;
-      }
+    li {
+      margin: 15px;
     }
   }
 }

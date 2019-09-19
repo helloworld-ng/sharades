@@ -1,24 +1,24 @@
 <template>
   <section class="home">
     <div class="background">
-      <cover @newBackground="setColour" :paused="activeScreen !== screens.WELCOME" />
+      <cover @newBackground="setColour" :paused="pauseAnimation" />
     </div>
     <section class="frame">
       <header>
         <wordmark :sign="wordmarkText" />
       </header>
       <section class="body">
-        <transition :name="direction" mode="out-in">
+        <transition :name="slideDirection" mode="out-in">
           <div key="nav" id="nav" v-if="activeScreen === screens.WELCOME">
             <div class="centered">
-              <round-button sign="play" :colour="colour" @click="showCategories" />
+              <round-button sign="play" :colour="bgColour" @click="slideTo('CATEGORY')" />
             </div>
           </div>
           <div key="category" id="category" v-if="activeScreen === screens.CATEGORY">
-            <category @choose="setCategory" />
+            <list :items="categories" @choose="setCategory" />
           </div>
           <div key="config" id="config" v-if="activeScreen === screens.CONFIG">
-            Config
+            <config />
           </div>
           <div key="about" id="about" v-if="activeScreen === screens.ABOUT"></div>
           <div key="tutorial" id="tutorial" v-if="activeScreen === screens.TUTORIAL"></div>
@@ -26,11 +26,11 @@
       </section>
       <footer class="links">
         <div v-if="activeScreen === screens.WELCOME">
-          <a>About</a>
-          <a>Tutorial</a>
+          <a @click="slideTo('ABOUT')">About</a>
+          <a @click="slideTo('TUTORIAL')">Tutorial</a>
         </div>
         <div v-if="activeScreen === screens.CATEGORY">
-          <a @click="showWelcome()">Back</a>
+          <a @click="slideTo('WELCOME')">Back</a>
           <a @click="chooseRandomCategory()">Random</a>
         </div>
       </footer>
@@ -43,7 +43,8 @@ import { mapGetters } from 'vuex';
 import Wordmark from './Shared/Wordmark.vue';
 import RoundButton from './Shared/RoundButton.vue';
 import Cover from './Home/Cover.vue';
-import Category from './Home/Category.vue';
+import List from './Home/List.vue';
+import Config from './Home/Config.vue';
 
 export default {
   name: 'Home',
@@ -51,7 +52,8 @@ export default {
     Wordmark,
     RoundButton,
     Cover,
-    Category,
+    List,
+    Config,
   },
   data() {
     const screens = {
@@ -63,50 +65,53 @@ export default {
     };
 
     return {
-      introPlayed: false,
       screens,
       activeScreen: screens.WELCOME,
-      wordmarkText: null,
-      colour: null,
-      direction: null,
-      config: {},
+      bgColour: null,
+      slideDirection: null,
     };
   },
   computed: {
     ...mapGetters([
+      'config',
       'allCategories',
     ]),
     categories() {
-      return Object.values(this.allCategories).map(cat => ({ name: cat }));
+      return Object.values(this.allCategories);
+    },
+    wordmarkText() {
+      switch (this.activeScreen) {
+        case this.screens.CATEGORY:
+          return 'Choose Category';
+        case this.screens.CONFIG:
+          console.log(this.config);
+          return this.config.category;
+        default:
+          return null;
+      }
+    },
+    pauseAnimation() {
+      return this.activeScreen !== this.screens.WELCOME;
     },
   },
   methods: {
     slideTo(screenName) {
       const destinationScreen = this.screens[screenName];
       const isPreviousScreen = this.activeScreen > destinationScreen;
-      this.direction = isPreviousScreen ? 'moveright' : 'moveleft';
+      this.slideDirection = isPreviousScreen ? 'moveright' : 'moveleft';
       this.activeScreen = destinationScreen;
     },
-    showWelcome() {
-      this.wordmarkText = null;
-      this.slideTo('WELCOME');
-    },
     setColour(colour) {
-      setTimeout(() => { this.colour = colour; }, 150);
-    },
-    showCategories() {
-      this.wordmarkText = 'Choose Category';
-      this.pauseAnimation = true;
-      this.slideTo('CATEGORY');
+      setTimeout(() => { this.bgColour = colour; }, 150);
     },
     setCategory(category) {
-      this.wordmarkText = category;
-      this.config.category = category;
+      this.$store.dispatch('setConfig', { category });
       this.slideTo('CONFIG');
     },
     chooseRandomCategory() {
       const randomIndex = Math.ceil(Math.random(0, 1) * this.categories.length) - 1;
-      this.setCategory(this.categories[randomIndex].name);
+      const category = this.categories[randomIndex];
+      this.setCategory(category);
     },
     setConfig() {},
   },

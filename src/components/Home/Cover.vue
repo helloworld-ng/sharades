@@ -41,7 +41,7 @@ export default {
       const newIndex = this.currentIndex + 1;
       this.currentIndex = (newIndex >= screenCount) ? 0 : newIndex;
       this.$emit('newBackground', this.currentScreen.background);
-    }, 1500);
+    }, 2500);
   },
   destroyed() {
     window.clearInterval(this.player);
