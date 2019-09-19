@@ -1,18 +1,19 @@
 <template>
   <section class="home">
     <div class="background">
-      <cover @newBackground="setColour" :paused="pauseAnimation" />
+      <cover v-bind="currentAnimation" />
     </div>
     <section class="frame">
       <header>
         <wordmark :sign="wordmarkText" />
       </header>
       <section class="body">
-        <transition :name="slideDirection" mode="out-in">
-          <div key="nav" id="nav" v-if="activeScreen === screens.WELCOME">
-            <div class="centered">
-              <round-button sign="play" :colour="bgColour" @click="slideTo('CATEGORY')" />
-            </div>
+        <transition :name="screenTransition" mode="out-in">
+          <div key="nav" id="nav" class="centered" v-if="activeScreen === screens.WELCOME">
+            <play-button
+              :colour="currentAnimation.backgroundColour"
+              @click="slideTo('CATEGORY')"
+            />
           </div>
           <div key="category" id="category" v-if="activeScreen === screens.CATEGORY">
             <list :items="categories" @choose="setCategory" />
@@ -41,7 +42,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Wordmark from './Shared/Wordmark.vue';
-import RoundButton from './Shared/RoundButton.vue';
+import PlayButton from './Home/PlayButton.vue';
 import Cover from './Home/Cover.vue';
 import List from './Home/List.vue';
 import Config from './Home/Config.vue';
@@ -50,7 +51,7 @@ export default {
   name: 'Home',
   components: {
     Wordmark,
-    RoundButton,
+    PlayButton,
     Cover,
     List,
     Config,
@@ -67,42 +68,41 @@ export default {
     return {
       screens,
       activeScreen: screens.WELCOME,
-      bgColour: null,
-      slideDirection: null,
+      screenTransition: null,
+      backgroundAnimation: null,
+      animationIsPaused: false,
+      animationSequenceIndex: 0,
     };
   },
   computed: {
     ...mapGetters([
       'config',
       'allCategories',
+      'animationSequence',
     ]),
     categories() {
       return Object.values(this.allCategories);
+    },
+    currentAnimation() {
+      return this.animationSequence[this.animationSequenceIndex];
     },
     wordmarkText() {
       switch (this.activeScreen) {
         case this.screens.CATEGORY:
           return 'Choose Category';
         case this.screens.CONFIG:
-          console.log(this.config);
           return this.config.category;
         default:
           return null;
       }
-    },
-    pauseAnimation() {
-      return this.activeScreen !== this.screens.WELCOME;
     },
   },
   methods: {
     slideTo(screenName) {
       const destinationScreen = this.screens[screenName];
       const isPreviousScreen = this.activeScreen > destinationScreen;
-      this.slideDirection = isPreviousScreen ? 'moveright' : 'moveleft';
+      this.screenTransition = isPreviousScreen ? 'moveright' : 'moveleft';
       this.activeScreen = destinationScreen;
-    },
-    setColour(colour) {
-      setTimeout(() => { this.bgColour = colour; }, 150);
     },
     setCategory(category) {
       this.$store.dispatch('setConfig', { category });
@@ -114,6 +114,17 @@ export default {
       this.setCategory(category);
     },
     setConfig() {},
+  },
+  created() {
+    const screenCount = this.animationSequence.length;
+    this.backgroundAnimation = setInterval(() => {
+      if (this.animationIsPaused) return;
+      const nextSlide = this.animationSequenceIndex + 1;
+      this.animationSequenceIndex = (nextSlide >= screenCount) ? 0 : nextSlide;
+    }, 2500);
+  },
+  destroyed() {
+    window.clearInterval(this.backgroundAnimation);
   },
 };
 </script>

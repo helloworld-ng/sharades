@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import categories from './data/categories';
+import animation from './data/animation';
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const GAME_MODES = {
 };
 
 const GAME_CATEGORIES = categories;
+const ANIMATION_SEQUENCE = animation;
 
 export default new Vuex.Store({
   state: {
@@ -35,6 +37,7 @@ export default new Vuex.Store({
   },
   getters: {
     allCategories: () => GAME_CATEGORIES,
+    animationSequence: () => ANIMATION_SEQUENCE,
     allStates: () => GAME_STATES,
     currentState: state => state.gameState,
     currentTurn: (state) => {

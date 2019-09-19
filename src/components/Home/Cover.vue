@@ -8,50 +8,13 @@
 export default {
   name: 'Cover',
   props: {
-    paused: Boolean,
-  },
-  data() {
-    return {
-      currentIndex: 0,
-      sequence: [{
-        lineColor: 'green',
-        lineDirection: 'to-right',
-        background: 'blue',
-      }, {
-        lineColor: 'blue',
-        lineDirection: 'to-top',
-        background: 'red',
-      }, {
-        lineColor: 'red',
-        lineDirection: 'to-right',
-        background: 'blue',
-      }, {
-        lineColor: 'blue',
-        lineDirection: 'to-top',
-        background: 'green',
-      }],
-      player: null,
-    };
-  },
-  created() {
-    this.$emit('newBackground', this.currentScreen.background);
-    const screenCount = this.sequence.length;
-    this.player = setInterval(() => {
-      if (this.paused) return;
-      const newIndex = this.currentIndex + 1;
-      this.currentIndex = (newIndex >= screenCount) ? 0 : newIndex;
-      this.$emit('newBackground', this.currentScreen.background);
-    }, 2500);
-  },
-  destroyed() {
-    window.clearInterval(this.player);
+    backgroundColour: String,
+    lineColour: String,
+    lineDirection: String,
   },
   computed: {
-    currentScreen() {
-      return this.sequence[this.currentIndex];
-    },
     className() {
-      return `${this.currentScreen.lineColor}-lines ${this.currentScreen.lineDirection} ${this.currentScreen.background}-bg`;
+      return `${this.lineColour}-lines ${this.lineDirection} ${this.backgroundColour}-bg`;
     },
   },
 };

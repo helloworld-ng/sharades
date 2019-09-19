@@ -1,14 +1,14 @@
 <template>
   <a :class="className" @click="$emit('click')">
-    {{ sign }}
+    {{ text || 'Play' }}
   </a>
 </template>
 
 <script>
 export default {
-  name: 'GameButton',
+  name: 'PlayButton',
   props: {
-    sign: String,
+    text: String,
     colour: String,
   },
   computed: {
