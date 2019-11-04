@@ -1,7 +1,7 @@
 <template>
   <section id="choose-category">
     <main>
-      <list :items="GAME_CATEGORIES" value="id" label="label" @click="setCategory" />
+      <list :items="gameCategories" value="id" label="label" @click="setCategory" />
     </main>
   </section>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'GAME_CATEGORIES',
+      'gameCategories',
     ]),
   },
   methods: {

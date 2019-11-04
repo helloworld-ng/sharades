@@ -1,7 +1,7 @@
 <template>
   <section id="welcome">
     <main>
-      <round-button text="Play" :colour="backgroundColour" @click="$emit('clickedPlay')" />
+      <round-button text="Play" :textColour="backgroundColour" @click="$emit('clickedPlay')" />
     </main>
     <footer>
       <a @click="goToScreen('ABOUT')">About</a>
@@ -36,6 +36,14 @@ section {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 footer {

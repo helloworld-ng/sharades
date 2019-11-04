@@ -44,7 +44,6 @@ export default {
 .wordmark {
   text-align: center;
   color: $yellow;
-  margin-top: 30px;
 
   figure {
     display: block;

@@ -55,16 +55,7 @@ export default {
   &::before, &::after {
     content: '';
     position: absolute;
-  }
-  &.to-left, &.to-right {
-    &::before, &::after {
-      animation-duration: .5s;
-    }
-  }
-  &.to-top {
-    &::before, &::after {
-      animation-duration: .6s;
-    }
+    animation-duration: .6s;
   }
   &.to-left, &.to-right {
     &::before, &::after {

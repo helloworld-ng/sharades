@@ -33,13 +33,13 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'gameDifficulties',
       'backgroundColour',
       'gameConfig',
-      'GAME_DIFFICULTIES',
     ]),
     difficulties() {
-      return Object.keys(this.GAME_DIFFICULTIES)
-        .map(key => ({ key, value: this.GAME_DIFFICULTIES[key] }));
+      return Object.keys(this.gameDifficulties)
+        .map(key => ({ key, value: this.gameDifficulties[key] }));
     },
   },
   data() {

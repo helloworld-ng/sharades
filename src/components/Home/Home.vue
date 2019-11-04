@@ -1,15 +1,15 @@
 <template>
   <section class="home">
-    <div class="home__background">
-      <background :sequence="ANIMATION_SEQUENCE" @change="onAnimationChange" />
-    </div>
-    <header class="home__header">
+    <section class="home__background">
+      <background :sequence="animationSequence" @change="onAnimationChange" />
+    </section>
+    <section class="home__header">
       <wordmark :text="screenName" :animate="isWelcomeScreen" />
-    </header>
-    <main class="home__body">
+    </section>
+    <section class="home__body">
       <transition :name="transitionDirection" mode="out-in">
         <div v-if="homeScreen === 'welcome'" key="welcome">
-          <welcome :buttonColor="backgroundColour" @clickedPlay="goToScreen('categoryChoice')" />
+          <welcome @clickedPlay="goToScreen('categoryChoice')" />
         </div>
         <div v-else-if="homeScreen === 'categoryChoice'" key="category">
           <category-choice @setCategory="goToScreen('gameConfig')" />
@@ -18,13 +18,13 @@
           <game-config @clickedStart="startGame()" />
         </div>
       </transition>
-    </main>
+    </section>
   </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Background from './AnimatedBackground.vue';
+import Background from './Background.vue';
 import Wordmark from '../shared/Wordmark.vue';
 import Welcome from './Welcome.vue';
 import CategoryChoice from './CategoryChoice.vue';
@@ -41,18 +41,17 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'ANIMATION_SEQUENCE',
+      'animationSequence',
       'homeScreen',
       'backgroundColour',
       'gameConfig',
       'transitionDirection',
     ]),
     screenName() {
-      const homeScreen = this.homeScreen.id;
-      return homeScreen === 'CONFIG' ? this.gameConfig.category : this.homeScreen.name;
+      return this.homeScreen === 'gameConfig' ? this.gameConfig.category : this.homeScreen.name;
     },
     isWelcomeScreen() {
-      return this.homeScreen.id === 'WELCOME';
+      return this.homeScreen === 'welcome';
     },
   },
   methods: {
@@ -76,6 +75,8 @@ export default {
   padding: 30px 30px 30px;
   background: $green;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   &__background {
     width: 100%;
     height: 100%;
@@ -83,12 +84,15 @@ export default {
     top: 0;
     left: 0;
   }
-  &__content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  &__header, &__body {
     position: relative;
     z-index: 2;
+  }
+  &__body {
+    flex: 1;
+    > div {
+      height: 100%;
+    }
   }
 }
 

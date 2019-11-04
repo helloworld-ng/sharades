@@ -9,12 +9,12 @@ export default {
   name: 'RoundButton',
   props: {
     text: String,
-    colour: String,
+    textColour: String,
     size: String,
   },
   computed: {
     className() {
-      return `button ${this.colour}`;
+      return `button ${this.textColour}`;
     },
   },
 };
