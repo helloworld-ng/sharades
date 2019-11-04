@@ -1,56 +1,55 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import STATES from './data/app/states';
-import SCREENS from './data/app/screens';
-import ANIMATION_SEQUENCE from './data/app/animation-sequence';
-import CATEGORIES from './data/game/categories';
-import DIFFICULTIES from './data/game/difficulties';
+import appStates from './data/app/app-states';
+import homeScreens from './data/app/home-screens';
+import animationSequence from './data/app/animation-sequence';
+import gameCategories from './data/game/categories';
+import gameDifficulties from './data/game/difficulties';
 
 Vue.use(Vuex);
 
+const appState = appStates[0].id;
+
+const homeConfig = {
+  backgroundColour: animationSequence[0].backgroundColour,
+  activeScreen: homeScreens[0].id,
+  transitionDirection: null,
+};
+
+const gameConfig = {
+  difficulty: 'easy',
+  category: null,
+  teams: 2,
+  turnsPerTeam: 2,
+};
+
 export default new Vuex.Store({
   state: {
-    appState: STATES.IDLE,
-    viewConfig: {
-      visibleScreen: SCREENS.HOME,
-      backgroundColor: null,
-      transitionDirection: null,
-    },
-    gameConfig: {
-      difficulty: DIFFICULTIES.EASY,
-      category: null,
-      teams: 2,
-      turnsPerTeam: 2,
-    },
+    appState,
+    homeConfig,
+    gameConfig,
     gameTurns: [],
   },
   getters: {
-    states: () => STATES,
-    screens: () => SCREENS,
-    categories: () => CATEGORIES,
-    difficulties: () => DIFFICULTIES,
-    animationSequence: () => ANIMATION_SEQUENCE,
+    APP_STATES: () => appStates,
+    GAME_CATEGORIES: () => gameCategories,
+    GAME_DIFFICULTIES: () => gameDifficulties,
+    ANIMATION_SEQUENCE: () => animationSequence,
     appState: state => state.appState,
-    visibleScreen: state => state.viewConfig.visibleScreen,
-    backgroundColor: state => state.viewConfig.backgroundColor,
-    transitionDirection: state => state.viewConfig.transitionDirection,
+    homeScreen: state => state.homeConfig.activeScreen,
+    backgroundColour: state => state.homeConfig.backgroundColour,
+    transitionDirection: state => state.homeConfig.transitionDirection,
     gameConfig: state => state.gameConfig,
   },
   mutations: {
-    setAppState(state, appState) {
-      state.appState = appState;
+    setAppState(state, newState) {
+      state.appState = newState;
     },
-    setBackgroundColor(state, backgroundColor) {
-      state.viewConfig.backgroundColor = backgroundColor;
+    configureHomeScreen(state, { key, value }) {
+      state.homeConfig[key] = value;
     },
-    setVisibleScreen(state, { screen, transitionDirection }) {
-      state.viewConfig.transitionDirection = transitionDirection;
-      state.viewConfig.visibleScreen = screen;
-    },
-    setGameConfig(state, payload) {
-      Object.keys(payload).forEach((property) => {
-        state.gameConfig[property] = payload[property];
-      });
+    configureGame(state, { key, value }) {
+      state.gameConfig[key] = value;
     },
     registerTurns(state, { teams, turnsPerTeam }) {
       for (let turn = 1; turn <= turnsPerTeam; turn += 1) {
@@ -66,27 +65,29 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    goToScreen({ state, commit }, screenName) {
-      const destinationScreen = this.screens[screenName];
+    goToScreen({ state, commit }, screenId) {
+      const destinationScreen = homeScreens.find(screen => screen.id === screenId);
       if (destinationScreen) {
-        const isNextScreen = destinationScreen.level > state.visibleScreen.level;
+        const isNextScreen = destinationScreen.level > state.homeScreen.level;
         const transitionDirection = isNextScreen ? 'moveleft' : 'moveright';
-        commit('setVisibleScreen', {
-          screen: destinationScreen,
-          transitionDirection,
-        });
+        commit('configureHomeScreen', { key: 'transitionDirection', value: transitionDirection });
+        commit('configureHomeScreen', { key: 'activeScreen', value: screenId });
       }
     },
-    changeBackgroundColor({ commit }, payload) {
-      commit('setBackgroundColor', payload);
+    configureHomeScreen({ commit }, changes) {
+      Object.keys(changes).forEach((key) => {
+        commit('configureHomeScreen', { key, value: changes[key] });
+      });
     },
-    setGameConfig({ commit }, payload) {
-      commit('setGameConfig', payload);
+    configureGame({ commit }, changes) {
+      Object.keys(changes).forEach((key) => {
+        commit('configureGame', { key, value: changes[key] });
+      });
     },
     startGame({ state, commit }) {
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
-      commit('setAppState', STATES.GAME_IN_PROGRESS);
+      commit('setAppState', 'gameInProgress');
     },
   },
 });

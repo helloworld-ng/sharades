@@ -1,20 +1,20 @@
 <template>
   <section class="home">
     <div class="home__background">
-      <background :sequence="animationSequence" @change="onAnimationChange" />
+      <background :sequence="ANIMATION_SEQUENCE" @change="onAnimationChange" />
     </div>
     <header class="home__header">
       <wordmark :text="screenName" :animate="isWelcomeScreen" />
     </header>
     <main class="home__body">
       <transition :name="transitionDirection" mode="out-in">
-        <div v-if="visibleScreen === 'WELCOME'" :key="welcome">
-          <welcome :buttonColor="buttonColor" @clickedPlay="goToScreen('CATEGORY')" />
+        <div v-if="homeScreen === 'welcome'" key="welcome">
+          <welcome :buttonColor="backgroundColour" @clickedPlay="goToScreen('categoryChoice')" />
         </div>
-        <div v-else-if="visibleScreen === 'CATEGORY'" :key="category">
-          <category-choice @next="goToScreen('CONFIG')" />
+        <div v-else-if="homeScreen === 'categoryChoice'" key="category">
+          <category-choice @setCategory="goToScreen('gameConfig')" />
         </div>
-        <div v-else-if="visibleScreen === 'CONFIG'" :key="config">
+        <div v-else-if="homeScreen === 'gameConfig'" key="config">
           <game-config @clickedStart="startGame()" />
         </div>
       </transition>
@@ -24,7 +24,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Background from './Background.vue';
+import Background from './AnimatedBackground.vue';
 import Wordmark from '../shared/Wordmark.vue';
 import Welcome from './Welcome.vue';
 import CategoryChoice from './CategoryChoice.vue';
@@ -39,35 +39,31 @@ export default {
     CategoryChoice,
     GameConfig,
   },
-  data() {
-    return {
-      buttonColor: null,
-    };
-  },
   computed: {
     ...mapGetters([
-      'visibleScreen',
-      'backgroundColor',
-      'animationSequence',
+      'ANIMATION_SEQUENCE',
+      'homeScreen',
+      'backgroundColour',
       'gameConfig',
+      'transitionDirection',
     ]),
     screenName() {
-      const visibleScreen = this.visibleScreen.id;
-      return visibleScreen === 'CONFIG' ? this.gameConfig.category : this.visibleScreen.name;
+      const homeScreen = this.homeScreen.id;
+      return homeScreen === 'CONFIG' ? this.gameConfig.category : this.homeScreen.name;
     },
     isWelcomeScreen() {
-      return this.visibleScreen.id === 'WELCOME';
+      return this.homeScreen.id === 'WELCOME';
     },
   },
   methods: {
     ...mapActions([
-      'changeBackgroundColor',
+      'configureHomeScreen',
       'goToScreen',
       'startGame',
     ]),
     onAnimationChange(activeSequence) {
-      const { backgroundColor } = activeSequence;
-      this.changeBackgroundColor(backgroundColor);
+      const { backgroundColour } = activeSequence;
+      this.configureHomeScreen({ backgroundColour });
     },
   },
 };

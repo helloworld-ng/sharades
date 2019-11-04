@@ -1,7 +1,7 @@
 <template>
   <section id="welcome">
     <main>
-      <round-button text="Play" :colour="backgroundColor" @click="$emit('clickedPlay')" />
+      <round-button text="Play" :colour="backgroundColour" @click="$emit('clickedPlay')" />
     </main>
     <footer>
       <a @click="goToScreen('ABOUT')">About</a>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import RoundButton from '../shared/RoundButton.vue';
 
 export default {
@@ -19,8 +19,10 @@ export default {
   components: {
     RoundButton,
   },
+  computed: mapGetters([
+    'backgroundColour',
+  ]),
   methods: mapActions([
-    'backgroundColor',
     'goToScreen',
   ]),
 };
@@ -28,7 +30,7 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../../scss/_colours';
+@import '../../scss/colours';
 
 section {
   height: 100%;

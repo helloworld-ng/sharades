@@ -1,9 +1,9 @@
 <template>
   <div class="app">
-    <main v-if="appState === 'IDLE'">
+    <main v-if="appState === 'idle'">
       <home />
     </main>
-    <main v-if="appState === 'GAME_IN_PROGRESS'">
+    <main v-else-if="appState === 'gameInProgress'">
       <game />
     </main>
   </div>
@@ -22,6 +22,7 @@ export default {
   },
   computed: mapGetters([
     'appState',
+    'states',
   ]),
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <section id="choose-category">
     <main>
-      <list :items="categoryArray" label="name" value="key" @click="setCategory" />
+      <list :items="GAME_CATEGORIES" value="id" label="label" @click="setCategory" />
     </main>
   </section>
 </template>
@@ -17,23 +17,20 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'categories',
+      'GAME_CATEGORIES',
     ]),
-    categoryArray() {
-      return Object.keys(this.categories).map(key => ({ key, name: this.categories[key] }));
-    },
   },
   methods: {
     ...mapActions([
-      'setGameConfig',
+      'configureGame',
     ]),
     setCategory(category) {
-      this.setGameConfig({ category });
-      this.$emit('next');
+      this.configureGame({ category });
+      this.$emit('setCategory');
     },
     chooseRandom() {
-      const randomIndex = Math.ceil(Math.random(0, 1) * this.categoryArray.length) - 1;
-      const { key } = this.categoryArray[randomIndex];
+      const randomIndex = Math.ceil(Math.random(0, 1) * this.categories.length) - 1;
+      const { key } = this.categories[randomIndex];
       this.setCategory(key);
     },
   },

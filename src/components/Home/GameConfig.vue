@@ -8,11 +8,11 @@
         <number-picker label="Turns" v-model="turnsPerTeam" @change="updateConfig" />
       </li>
       <li>
-        <word-picker label="Difficulty" :options="difficultiesArray"
+        <word-picker label="Difficulty" :options="difficulties"
          v-model="difficulty" @change="updateConfig" />
       </li>
       <li>
-        <round-button text="Start" size="small" :colour="backgroundColor" />
+        <round-button text="Start" size="small" :colour="backgroundColour" />
       </li>
     </ul>
   </section>
@@ -33,12 +33,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'backgroundColor',
+      'backgroundColour',
       'gameConfig',
-      'difficulties',
+      'GAME_DIFFICULTIES',
     ]),
-    difficultiesArray() {
-      return Object.keys(this.difficulties).map(key => ({ key, value: this.difficulties[key] }));
+    difficulties() {
+      return Object.keys(this.GAME_DIFFICULTIES)
+        .map(key => ({ key, value: this.GAME_DIFFICULTIES[key] }));
     },
   },
   data() {
@@ -47,12 +48,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setGameConfig',
+      'configureGame',
     ]),
     updateConfig(key) {
-      const config = {};
-      config[key] = this[key];
-      this.setGameConfig(config);
+      const update = {};
+      update[key] = this[key];
+      this.configureGame(update);
     },
   },
 };
