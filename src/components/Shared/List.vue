@@ -1,9 +1,9 @@
 <template>
   <div class="list">
     <ul>
-      <li v-for="item in items" :key="item">
-        <a class="h2" @click="choose(item)">
-          {{ item }}
+      <li v-for="item in item" :key="get(item, 'value')">
+        <a class="h2" @click="click(item)">
+          {{ get(item, 'label') }}
         </a>
       </li>
     </ul>
@@ -12,13 +12,18 @@
 
 <script>
 export default {
-  name: 'list',
+  name: 'List',
   props: {
     items: Array,
+    label: String,
+    value: String,
   },
   methods: {
-    choose(item) {
-      this.$emit('choose', item);
+    get(item, property) {
+      return typeof item === 'object' ? item[this[property]] : item;
+    },
+    click(item) {
+      this.$emit('click', this.get(item, 'value'));
     },
   },
 };
@@ -26,7 +31,7 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../../assets/colours.scss';
+@import '../../scss/colours';
 
 .list {
   ul {

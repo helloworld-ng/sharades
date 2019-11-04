@@ -1,0 +1,10 @@
+@import '../../../../scss/colours';
+
+.toggle {
+  display: flex;
+  color: $yellow;
+  .value {
+    flex: 1;
+    text-align: center;
+  }
+}

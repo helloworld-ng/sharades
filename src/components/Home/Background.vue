@@ -1,33 +1,52 @@
 <template>
-  <div class="cover">
+  <div class="background">
     <div :class="className"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Cover',
+  name: 'Background',
   props: {
-    backgroundColour: String,
-    lineColour: String,
-    lineDirection: String,
+    sequence: Array,
+    pauseAnimation: Boolean,
+  },
+  data() {
+    return {
+      intervalFunction: null,
+      intervalDuration: 2500,
+      activeSequence: 0,
+    };
   },
   computed: {
     className() {
-      return `${this.lineColour}-lines ${this.lineDirection} ${this.backgroundColour}-bg`;
+      const { lineColour, lineDirection, backgroundColour } = this.sequence[this.activeSequence];
+      return `${lineColour}-lines ${lineDirection} ${backgroundColour}-bg`;
     },
+  },
+  created() {
+    const stepCount = this.sequence.length;
+    this.intervalFunction = setInterval(() => {
+      if (this.pauseAnimation) return;
+      const nextSequence = this.activeSequence + 1;
+      this.activeSequence = (nextSequence < stepCount) ? nextSequence : 0;
+      this.$emit('change', this.sequence[this.activeSequence]);
+    }, this.intervalDuration);
+  },
+  destroyed() {
+    window.clearInterval(this.intervalFunction);
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/colours.scss';
+@import '../../scss/colours';
 
-.cover {
+.background {
   height: 100%;
 }
 
-.cover > div {
+.background > div {
   position: absolute;
   top: 0;
   left: 0;

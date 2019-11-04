@@ -1,15 +1,16 @@
 <template>
   <a :class="className" @click="$emit('click')">
-    {{ text || 'Play' }}
+    {{ text }}
   </a>
 </template>
 
 <script>
 export default {
-  name: 'PlayButton',
+  name: 'RoundButton',
   props: {
     text: String,
     colour: String,
+    size: String,
   },
   computed: {
     className() {
@@ -20,7 +21,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../assets/colours.scss';
+@import '../../scss/colours';
 
 .button {
   display: block;

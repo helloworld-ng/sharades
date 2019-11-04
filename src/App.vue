@@ -1,44 +1,28 @@
 <template>
   <div class="app">
-    <home v-if="is('IDLE')" />
-    <game v-else-if="is('IN_PROGRESS')" />
-    <stats v-else-if="is(['PAUSED', 'ENDED'])" />
+    <main v-if="appState === 'IDLE'">
+      <home />
+    </main>
+    <main v-if="appState === 'GAME_IN_PROGRESS'">
+      <game />
+    </main>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import Home from './components/Home.vue';
-import Game from './components/Game.vue';
-import Stats from './components/Stats.vue';
+import { mapGetters } from 'vuex';
+import Home from './components/Home/Home.vue';
+import Game from './components/Game/Game.vue';
 
 export default {
   name: 'app',
   components: {
     Home,
     Game,
-    Stats,
   },
-  computed: {
-    ...mapGetters([
-      'allStates',
-      'currentState',
-    ]),
-  },
-  methods: {
-    ...mapActions([
-      'start',
-      'nextTurn',
-      'restart',
-    ]),
-    is(value) {
-      if (typeof value === 'object') {
-        const states = value.map(state => this.allStates[state]);
-        return states.includes(this.currentState);
-      }
-      return this.allStates[value] === this.currentState;
-    },
-  },
+  computed: mapGetters([
+    'appState',
+  ]),
 };
 </script>
 
@@ -49,5 +33,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  > main {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
