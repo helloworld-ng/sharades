@@ -23,6 +23,7 @@ export default {
   methods: {
     ...mapActions([
       'configureGame',
+      'goToScreen',
     ]),
     setCategory(category) {
       this.configureGame({ category });

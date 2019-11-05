@@ -1,10 +1,11 @@
 <template>
   <section class="home">
     <section class="home__background">
-      <background :sequence="animationSequence" @change="onAnimationChange" />
+      <background :sequence="animationSequence"
+       :pauseAnimation="homeScreen !== 'welcome'" @change="onAnimationChange" />
     </section>
     <section class="home__header">
-      <wordmark :text="screenName" :animate="isWelcomeScreen" />
+      <wordmark :text="screenName" :pauseAnimation="homeScreen !== 'welcome'" @click="goToScreen('welcome')" />
     </section>
     <section class="home__body">
       <transition :name="transitionDirection" mode="out-in">
@@ -42,16 +43,15 @@ export default {
   computed: {
     ...mapGetters([
       'animationSequence',
+      'homeScreens',
       'homeScreen',
       'backgroundColour',
       'gameConfig',
       'transitionDirection',
     ]),
     screenName() {
-      return this.homeScreen === 'gameConfig' ? this.gameConfig.category : this.homeScreen.name;
-    },
-    isWelcomeScreen() {
-      return this.homeScreen === 'welcome';
+      const currentScreen = this.homeScreens.find(screen => screen.id === this.homeScreen);
+      return this.homeScreen === 'gameConfig' ? this.gameConfig.category : currentScreen.name;
     },
   },
   methods: {

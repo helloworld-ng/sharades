@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <ul>
-      <li v-for="item in item" :key="get(item, 'value')">
+      <li v-for="item in items" :key="get(item, 'value')">
         <a class="h2" @click="click(item)">
           {{ get(item, 'label') }}
         </a>

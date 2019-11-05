@@ -12,7 +12,7 @@ const appState = appStates[0].id;
 
 const homeConfig = {
   backgroundColour: animationSequence[0].backgroundColour,
-  activeScreen: homeScreens[0].id,
+  currentScreen: homeScreens[0].id,
   transitionDirection: null,
 };
 
@@ -33,10 +33,11 @@ export default new Vuex.Store({
   getters: {
     appStates: () => appStates,
     gameCategories: () => gameCategories,
+    homeScreens: () => homeScreens,
     gameDifficulties: () => gameDifficulties,
     animationSequence: () => animationSequence,
     appState: state => state.appState,
-    homeScreen: state => state.homeConfig.activeScreen,
+    homeScreen: state => state.homeConfig.currentScreen,
     backgroundColour: state => state.homeConfig.backgroundColour,
     transitionDirection: state => state.homeConfig.transitionDirection,
     gameConfig: state => state.gameConfig,
@@ -66,12 +67,14 @@ export default new Vuex.Store({
   },
   actions: {
     goToScreen({ state, commit }, screenId) {
+      const currentScreen = homeScreens
+        .find(screen => screen.id === state.homeConfig.currentScreen);
       const destinationScreen = homeScreens.find(screen => screen.id === screenId);
       if (destinationScreen) {
-        const isNextScreen = destinationScreen.level > state.homeScreen.level;
+        const isNextScreen = destinationScreen.level > currentScreen.level;
         const transitionDirection = isNextScreen ? 'moveleft' : 'moveright';
         commit('configureHomeScreen', { key: 'transitionDirection', value: transitionDirection });
-        commit('configureHomeScreen', { key: 'activeScreen', value: screenId });
+        commit('configureHomeScreen', { key: 'currentScreen', value: screenId });
       }
     },
     configureHomeScreen({ commit }, changes) {
