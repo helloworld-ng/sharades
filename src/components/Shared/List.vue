@@ -1,9 +1,9 @@
 <template>
   <div class="list">
     <ul>
-      <li v-for="item in items" :key="get(item, 'value')">
+      <li v-for="item in items" :key="get(item, 'valueProp')">
         <a class="h2" @click="click(item)">
-          {{ get(item, 'label') }}
+          {{ get(item, 'labelProp') }}
         </a>
       </li>
     </ul>
@@ -15,15 +15,21 @@ export default {
   name: 'List',
   props: {
     items: Array,
-    label: String,
-    value: String,
+    valueProp: {
+      type: String,
+      default: 'id',
+    },
+    labelProp: {
+      type: String,
+      default: 'label',
+    },
   },
   methods: {
     get(item, property) {
       return typeof item === 'object' ? item[this[property]] : item;
     },
     click(item) {
-      this.$emit('click', this.get(item, 'value'));
+      this.$emit('click', this.get(item, 'valueProp'));
     },
   },
 };

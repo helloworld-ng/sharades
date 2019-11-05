@@ -14,7 +14,14 @@ export default {
   },
   computed: {
     className() {
-      return `button ${this.textColour}`;
+      let className = 'button';
+      const additionalStyles = [this.textColour, this.size];
+      additionalStyles.forEach((style) => {
+        if (style) {
+          className += ` button__${style}`;
+        }
+      });
+      return className;
     },
   },
 };
@@ -24,26 +31,31 @@ export default {
 @import '../../scss/colours';
 
 .button {
-  display: block;
+  display: inline-block;
   width: 150px;
   height: 150px;
+  line-height: 150px;
   border-radius: 50%;
   background: $yellow;
   color: $green;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-family: 'Helvetica Ultra Compressed', sans-serif;
   font-weight: normal;
   font-size: 48px;
-  &.green {
+  text-align: center;
+  &__green {
     color: $green;
   }
-  &.blue {
+  &__blue {
     color: $blue;
   }
-  &.red {
+  &__red {
     color: $red;
+  }
+  &__small {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 36px;
   }
 }
 </style>

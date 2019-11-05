@@ -1,46 +1,75 @@
 <template>
-  <div class="picker" v-if="unit === 'words'">
-    <button class="picker__button" @click="next()">
-      <img src="./icons/chevron-left.svg">
-    </button>
-    <span class="picker__value">{{ value }}</span>
-    <button class="picker__button" @click="previous()">
-      <img src="./icons/chevron-right.svg">
-    </button>
+  <div class="picker">
+    <div class="picker__button">
+      <button @click="next()">
+        <img src="./icons/chevron-left.svg">
+      </button>
+    </div>
+    <div class="picker__value">
+      <span class="picker-value">{{ value }}</span>
+      <span class="picker-label" v-if="label">
+        {{ label }}
+      </span>
+    </div>
+    <div class="picker__button">
+      <button @click="previous()">
+        <img src="./icons/chevron-right.svg">
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'NumberPicker',
+  name: 'WordPicker',
   props: {
-    options: {
-      type: Array,
-      required: true,
+    options: Array,
+    value: [String, Number],
+    label: {
+      type: String,
+      required: false,
+    },
+    valueProp: {
+      type: String,
+      default: 'id',
+    },
+    labelProp: {
+      type: String,
+      default: 'label',
     },
   },
   data() {
     return {
-      option: 1,
+      selection: null,
     };
   },
   computed: {
-    value() {
-      const index = this.option - 1;
-      return this.options[index];
+    lastIndex() {
+      return this.options.length - 1;
+    },
+    selectionIndex() {
+      return this.options.indexOf(this.selection);
     },
   },
   methods: {
+    get(option, property) {
+      return typeof option === 'object' ? option[this[property]] : option;
+    },
     next() {
-      const lastOption = this.options.length;
-      this.option = this.option === lastOption ? 0 : this.option + 1;
-      this.$emit('value', this.value());
+      const nextOption = this.selectionIndex === this.lastIndex ? 0 : this.selectionIndex + 1;
+      this.select(nextOption);
     },
     previous() {
-      const lastOption = this.options.length;
-      this.option = this.option === 1 ? lastOption : this.option - 1;
-      this.$emit('value', this.value());
+      const nextOption = this.selectionIndex === 0 ? this.lastIndex : this.selectionIndex - 1;
+      this.select(nextOption);
     },
+    select(index) {
+      this.selection = this.options[index];
+      this.$emit('input', this.get(this.selection, 'valueProp'));
+    },
+  },
+  created() {
+    this.select(0);
   },
 };
 </script>

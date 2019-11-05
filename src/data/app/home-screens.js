@@ -1,6 +1,6 @@
 export default [{
   id: 'welcome',
-  label: 'Welcome',
+  label: null,
   level: 0,
 }, {
   id: 'categoryChoice',

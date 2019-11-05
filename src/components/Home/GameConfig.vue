@@ -1,6 +1,6 @@
 <template>
-  <section id="config">
-    <ul>
+  <section id="config" class="config">
+    <ul class="config__list">
       <li>
         <number-picker label="Teams" v-model="teams" @change="updateConfig" />
       </li>
@@ -8,11 +8,11 @@
         <number-picker label="Turns" v-model="turnsPerTeam" @change="updateConfig" />
       </li>
       <li>
-        <word-picker label="Difficulty" :options="difficulties"
+        <word-picker label="Difficulty" :options="gameDifficulties"
          v-model="difficulty" @change="updateConfig" />
       </li>
       <li>
-        <round-button text="Start" size="small" :colour="backgroundColour" />
+        <round-button text="Start" size="small" :textColour="backgroundColour" />
       </li>
     </ul>
   </section>
@@ -37,13 +37,9 @@ export default {
       'backgroundColour',
       'gameConfig',
     ]),
-    difficulties() {
-      return Object.keys(this.gameDifficulties)
-        .map(key => ({ key, value: this.gameDifficulties[key] }));
-    },
   },
   data() {
-    const { difficulty, teams, turnsPerTeam } = this.gameConfig;
+    const { difficulty, teams, turnsPerTeam } = this.$store.getters.gameConfig;
     return { difficulty, teams, turnsPerTeam };
   },
   methods: {
@@ -60,12 +56,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '../../scss/colours';
+
 .config {
-  ul {
+  padding: 15px 30px 45px;
+  &__list {
     list-style: none;
     text-align: center;
+    padding: 0;
+    margin: 0;
     > li {
-      margin-bottom: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+      &:last-child {
+        margin-top: 45px;
+      }
     }
   }
 }

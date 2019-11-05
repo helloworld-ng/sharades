@@ -1,7 +1,7 @@
 <template>
   <section id="choose-category">
     <main>
-      <list :items="gameCategories" value="id" label="label" @click="setCategory" />
+      <list :items="gameCategories" @click="setCategory" />
     </main>
   </section>
 </template>
