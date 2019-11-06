@@ -4,32 +4,38 @@ section {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
 
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+  header {
+    display: flex;
+    justify-content: center;
+  }
 
-footer {
-  display: flex;
-  span {
+  main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  span:nth-child(1) {
-    text-align: left;
-    &:last-child {
-      text-align: center;
+  
+  footer {
+    display: flex;
+    span {
+      flex: 1;
     }
-  }
-  span:nth-child(2) {
-    &:last-child {
-      text-align: right;
+    span:nth-child(1) {
+      text-align: left;
+      &:last-child {
+        text-align: center;
+      }
     }
-  }
-  a {
-    color: $yellow;
+    span:nth-child(2) {
+      &:last-child {
+        text-align: right;
+      }
+    }
+    a {
+      color: $yellow;
+    }
   }
 }

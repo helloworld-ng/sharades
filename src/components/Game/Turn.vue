@@ -1,41 +1,94 @@
 <template>
   <section class="turn">
-    <header>{{ currentTurn.timer }}</header>
+    <header>
+      <div class="turn__timer">{{ activeTurn.timeLeft }}</div>
+    </header>
     <main>
-      <div class="turn__label">{{ label }}</div>
-      <div class="turn__word">{{ word }}</div>
+      <div class="turn__word h2">
+        <span v-if="activeTurn.started">
+          {{ actingWord }}
+        </span>
+        <span v-else>
+          {{ turnDescription  }}
+        </span>
+      </div>
     </main>
     <footer>
-      <span><a @click="startTimer()">Start</a></span>
+      <span v-if="activeTurn.started">
+        {{ activeTurn.correctGuesses.length }}
+      </span>
+      <span v-else>
+        <ul class="turn__instructions">
+          <li>Tap twice if you guess right</li>
+          <li>Swipe to change the word</li>
+          <li>Tap twice to start</li>
+        </ul>
+      </span>
     </footer>
   </section>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Turn',
   computed: {
     ...mapGetters([
-      'currentTurn',
+      'activeTurn',
+      'actingWord',
     ]),
-    label() {
-      const teamId = `Team ${this.currentTurn.team}`;
-      return this.currentTurn.started ? 'You\'re acting' : teamId;
-    },
-    word() {
-      return 'Ready';
+    turnDescription() {
+      return `Team ${this.activeTurn.team} / Turn ${this.activeTurn.count}`;
     },
   },
+  data() {
+    return {
+      startTimer: false,
+    };
+  },
   methods: {
-    startTimer() {
-      // Start here
+    ...mapActions([
+      'startCurrentTurn',
+      'saveCorrectGuess',
+      'changeActingWord',
+    ]),
+    onDoubleTap() {
+      if (this.activeTurn.started) {
+        this.saveCorrectGuess();
+      } else {
+        this.startCurrentTurn();
+      }
+    },
+    onSwipe() {
+      this.changeActingWord();
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+@import '../../scss/colours';
 @import '../../scss/section';
+
+.turn {
+  padding: 30px;
+  &__label {
+    color: $green;
+  }
+  &__word {
+    color: $yellow;
+  }
+  &--active {
+    &__label {
+      color: $neutral;
+    }
+    &__word {
+      color: $green;
+    }
+  }
+  &__start {
+    color: $green;
+  }
+}
 </style>

@@ -23,12 +23,34 @@ const gameConfig = {
   turnsPerTeam: 2,
 };
 
+function Turn(team, count) {
+  this.team = team;
+  this.count = count;
+  this.started = false;
+  this.timeLeft = 60;
+  this.correctGuesses = [];
+  this.startTimer = () => {
+    const turnTimer = setTimeout(() => {
+      this.timeLeft -= 1;
+      if (this.timeLeft === 0) {
+        window.clearTimeout(turnTimer);
+      }
+    }, 1000);
+  };
+  this.saveCorrectGuess = (word) => {
+    this.correctGuesses.push(word);
+  };
+}
+
 export default new Vuex.Store({
   state: {
     appState,
     homeConfig,
     gameConfig,
     gameTurns: [],
+    wordBank: [],
+    discardPile: [],
+    actingWord: null,
   },
   getters: {
     appStates: () => appStates,
@@ -41,7 +63,7 @@ export default new Vuex.Store({
     backgroundColour: state => state.homeConfig.backgroundColour,
     transitionDirection: state => state.homeConfig.transitionDirection,
     gameConfig: state => state.gameConfig,
-    currentTurn: state => state.gameTurns.find(turn => !turn.started),
+    activeTurn: state => state.gameTurns.find(turn => !turn.started),
   },
   mutations: {
     setAppState(state, newState) {
@@ -54,17 +76,23 @@ export default new Vuex.Store({
       state.gameConfig[key] = value;
     },
     registerTurns(state, { teams, turnsPerTeam }) {
-      for (let turn = 1; turn <= turnsPerTeam; turn += 1) {
+      for (let turnCount = 1; turnCount <= turnsPerTeam; turnCount += 1) {
         for (let team = 1; team <= teams; team += 1) {
-          state.gameTurns.push({
-            id: (turn * teams) - (teams - team),
-            team,
-            timer: 60,
-            started: false,
-            completed: false,
-          });
+          state.gameTurns.push(new Turn(team, turnCount));
         }
       }
+    },
+    saveWordsForGame(state) {
+      state.wordBank = ['One', 'Two', 'Three'];
+    },
+    setActingWord(state, actingWord) {
+      state.actingWord = actingWord;
+    },
+    addToDiscardPile(state, word) {
+      state.discardPile.push(word);
+    },
+    removeFromWordBank(state, wordToRemove) {
+      state.wordBank = state.wordBank.filter(word => word !== wordToRemove);
     },
   },
   actions: {
@@ -88,11 +116,35 @@ export default new Vuex.Store({
       Object.keys(changes).forEach((key) => {
         commit('configureGame', { key, value: changes[key] });
       });
+      commit('saveWordsForGame');
     },
     startGame({ state, commit }) {
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
       commit('setAppState', 'turnInProgress');
+    },
+    startCurrentTurn({ state, dispatch }) {
+      dispatch('setActingWord');
+      state.currentTurn.startTimer();
+    },
+    saveCorrectGuess({ state, dispatch }) {
+      state.currentTurn.saveCorrectGuess(state.actingWord);
+      dispatch('changeActingWord');
+    },
+    async setActingWord({ state, commit, dispatch }) {
+      if (state.wordBank.length === 0) {
+        await dispatch('resetWords');
+      }
+      const randomIndex = Math.ceil(Math.random(0, 1) * state.wordBank.length) - 1;
+      commit('setActingWord', state.wordBank[randomIndex]);
+    },
+    changeActingWord({ state, commit, dispatch }) {
+      commit('addToDiscardPile', state.actingWord);
+      commit('removeFromWordBank', state.actingWord);
+      dispatch('setActingWord');
+    },
+    resetWords({ commit }) {
+      commit('saveWordsForGame');
     },
   },
 });
