@@ -8,13 +8,13 @@
         <number-picker label="Turns" v-model="turnsPerTeam" @change="updateConfig" />
       </li>
       <li>
-        <word-picker label="Difficulty" :options="gameDifficulties"
+        <word-picker label="Mode" :options="gameDifficulties"
          v-model="difficulty" @change="updateConfig" />
       </li>
-      <li>
-        <round-button text="Start" size="small" :textColour="backgroundColour" />
-      </li>
     </ul>
+    <div class="config__start">
+      <round-button text="Start" size="small" :textColour="backgroundColour" />
+    </div>
   </section>
 </template>
 
@@ -59,18 +59,24 @@ export default {
 @import '../../scss/colours';
 
 .config {
-  padding: 15px 30px 45px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__start {
+    height: 100px;
+    text-align: center;
+  }
   &__list {
+    flex: 1;
     list-style: none;
     text-align: center;
-    padding: 0;
+    padding: 15px 30px 45px;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     > li {
-      margin-bottom: 30px;
       text-align: center;
-      &:last-child {
-        margin-top: 45px;
-      }
     }
   }
 }
