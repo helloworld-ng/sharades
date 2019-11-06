@@ -3,6 +3,9 @@
     <main>
       <list :items="gameCategories" @click="setCategory" />
     </main>
+    <footer>
+      <span><a @click="chooseRandom()">Random</a></span>
+    </footer>
   </section>
 </template>
 
@@ -30,9 +33,9 @@ export default {
       this.$emit('setCategory');
     },
     chooseRandom() {
-      const randomIndex = Math.ceil(Math.random(0, 1) * this.categories.length) - 1;
-      const { key } = this.categories[randomIndex];
-      this.setCategory(key);
+      const randomIndex = Math.ceil(Math.random(0, 1) * this.gameCategories.length) - 1;
+      const { id } = this.gameCategories[randomIndex];
+      this.setCategory(id);
     },
   },
 };
@@ -40,9 +43,5 @@ export default {
 
 
 <style scoped lang="scss">
-section {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+@import '../../scss/section';
 </style>

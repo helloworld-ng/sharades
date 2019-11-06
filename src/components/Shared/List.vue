@@ -43,10 +43,10 @@ export default {
   ul {
     list-style: none;
     text-align: center;
-    margin: 30px 0;
+    margin: 0;
     padding: 0;
     > li {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       a {
         color: $yellow;
       }

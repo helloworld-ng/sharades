@@ -41,6 +41,7 @@ export default new Vuex.Store({
     backgroundColour: state => state.homeConfig.backgroundColour,
     transitionDirection: state => state.homeConfig.transitionDirection,
     gameConfig: state => state.gameConfig,
+    currentTurn: state => state.gameTurns.find(turn => !turn.started),
   },
   mutations: {
     setAppState(state, newState) {
@@ -55,11 +56,12 @@ export default new Vuex.Store({
     registerTurns(state, { teams, turnsPerTeam }) {
       for (let turn = 1; turn <= turnsPerTeam; turn += 1) {
         for (let team = 1; team <= teams; team += 1) {
-          state.gameData.push({
-            turn,
+          state.gameTurns.push({
+            id: (turn * teams) - (teams - team),
             team,
-            isPlayed: false,
-            isActive: false,
+            timer: 60,
+            started: false,
+            completed: false,
           });
         }
       }
@@ -90,7 +92,7 @@ export default new Vuex.Store({
     startGame({ state, commit }) {
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
-      commit('setAppState', 'gameInProgress');
+      commit('setAppState', 'turnInProgress');
     },
   },
 });

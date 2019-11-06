@@ -1,20 +1,25 @@
 <template>
   <section id="config" class="config">
-    <ul class="config__list">
-      <li>
-        <number-picker label="Teams" v-model="teams" @change="updateConfig" />
-      </li>
-      <li>
-        <number-picker label="Turns" v-model="turnsPerTeam" @change="updateConfig" />
-      </li>
-      <li>
-        <word-picker label="Mode" :options="gameDifficulties"
-         v-model="difficulty" @change="updateConfig" />
-      </li>
-    </ul>
-    <div class="config__start">
-      <round-button text="Start" size="small" :textColour="backgroundColour" />
-    </div>
+    <main>
+      <ul class="config__list">
+        <li>
+          <number-picker label="Teams" v-model="teams" @input="updateConfig()" />
+        </li>
+        <li>
+          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateConfig()" />
+        </li>
+        <li>
+          <word-picker label="Mode" :options="gameDifficulties"
+          v-model="difficulty" @input="updateConfig()" />
+        </li>
+      </ul>
+    </main>
+    <footer>
+      <span>
+        <round-button text="Start" size="small" :textColour="backgroundColour"
+         @click="startGame" />
+      </span>
+    </footer>
   </section>
 </template>
 
@@ -45,32 +50,25 @@ export default {
   methods: {
     ...mapActions([
       'configureGame',
+      'startGame',
     ]),
-    updateConfig(key) {
-      const update = {};
-      update[key] = this[key];
-      this.configureGame(update);
+    updateConfig() {
+      const { difficulty, teams, turnsPerTeam } = this;
+      this.configureGame({ difficulty, teams, turnsPerTeam });
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '../../scss/colours';
+@import '../../scss/section';
 
 .config {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  &__start {
-    height: 100px;
-    text-align: center;
-  }
   &__list {
     flex: 1;
     list-style: none;
     text-align: center;
-    padding: 15px 30px 45px;
+    padding: 30px;
     margin: 0;
     display: flex;
     flex-direction: column;

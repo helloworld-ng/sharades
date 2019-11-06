@@ -4,8 +4,8 @@
       <round-button text="Play" :textColour="backgroundColour" @click="$emit('clickedPlay')" />
     </main>
     <footer>
-      <a @click="goToScreen('ABOUT')">About</a>
-      <a @click="goToScreen('TUTORIAL')">Tutorial</a>
+      <span><a @click="goToScreen('ABOUT')">About</a></span>
+      <span><a @click="goToScreen('TUTORIAL')">Tutorial</a></span>
     </footer>
   </section>
 </template>
@@ -30,28 +30,9 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../../scss/colours';
-
-section {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+@import '../../scss/section';
 
 main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-footer {
-  a {
-    color: $yellow;
-    &:last-child {
-      float: right;
-    }
-  }
 }
 </style>

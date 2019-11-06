@@ -3,8 +3,9 @@
     <main v-if="appState === 'idle'">
       <home />
     </main>
-    <main v-else-if="appState === 'gameInProgress'">
-      <game />
+    <main v-else>
+      <turn v-if="appState === 'turnInProgress'" />
+      <stats v-if="appState === 'turnCompleted'" />
     </main>
   </div>
 </template>
@@ -12,17 +13,18 @@
 <script>
 import { mapGetters } from 'vuex';
 import Home from './components/Home/Home.vue';
-import Game from './components/Game/Game.vue';
+import Turn from './components/Game/Turn.vue';
+import Stats from './components/Game/Stats.vue';
 
 export default {
   name: 'app',
   components: {
     Home,
-    Game,
+    Turn,
+    Stats,
   },
   computed: mapGetters([
     'appState',
-    'states',
   ]),
 };
 </script>
