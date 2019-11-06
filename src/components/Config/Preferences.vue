@@ -1,23 +1,23 @@
 <template>
-  <section id="config" class="config">
+  <section id="preferences" class="preferences">
     <main>
-      <ul class="config__list">
+      <ul class="preferences__list">
         <li>
-          <number-picker label="Teams" v-model="teams" @input="updateConfig()" />
+          <number-picker label="Teams" v-model="teams" @input="updateGame()" />
         </li>
         <li>
-          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateConfig()" />
+          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateGame()" />
         </li>
         <li>
           <word-picker label="Mode" :options="gameDifficulties"
-          v-model="difficulty" @input="updateConfig()" />
+          v-model="difficulty" @input="updateGame()" />
         </li>
       </ul>
     </main>
     <footer>
       <span>
         <round-button text="Start" size="small" :textColour="backgroundColour"
-         @click="startGame" />
+         @click="$emit('done')" />
       </span>
     </footer>
   </section>
@@ -30,7 +30,7 @@ import WordPicker from '../shared/Picker/WordPicker.vue';
 import RoundButton from '../shared/RoundButton.vue';
 
 export default {
-  name: 'GameConfig',
+  name: 'Preferences',
   components: {
     NumberPicker,
     WordPicker,
@@ -49,21 +49,20 @@ export default {
   },
   methods: {
     ...mapActions([
-      'configureGame',
-      'startGame',
+      'saveGamePreference',
     ]),
-    updateConfig() {
+    updateGame() {
       const { difficulty, teams, turnsPerTeam } = this;
-      this.configureGame({ difficulty, teams, turnsPerTeam });
+      this.saveGamePreference({ difficulty, teams, turnsPerTeam });
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import '../../scss/section';
+@import '../../scss/layout/frame';
 
-.config {
+.preferences {
   &__list {
     flex: 1;
     list-style: none;

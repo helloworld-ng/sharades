@@ -1,19 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import appStates from './data/app/app-states';
-import homeScreens from './data/app/home-screens';
 import animationSequence from './data/app/animation-sequence';
+import viewOrder from './data/app/view-order';
 import gameCategories from './data/game/categories';
 import gameDifficulties from './data/game/difficulties';
 
 Vue.use(Vuex);
 
-const appState = appStates[0].id;
-
-const homeConfig = {
+const appConfig = {
+  view: 'welcome',
+  transitionDirection: 'moveright',
   backgroundColour: animationSequence[0].backgroundColour,
-  currentScreen: homeScreens[0].id,
-  transitionDirection: null,
 };
 
 const gameConfig = {
@@ -44,8 +41,7 @@ function Turn(team, count) {
 
 export default new Vuex.Store({
   state: {
-    appState,
-    homeConfig,
+    appConfig,
     gameConfig,
     gameTurns: [],
     wordBank: [],
@@ -53,24 +49,23 @@ export default new Vuex.Store({
     actingWord: null,
   },
   getters: {
-    appStates: () => appStates,
-    gameCategories: () => gameCategories,
-    homeScreens: () => homeScreens,
-    gameDifficulties: () => gameDifficulties,
+    view: state => state.appConfig.view,
     animationSequence: () => animationSequence,
-    appState: state => state.appState,
-    homeScreen: state => state.homeConfig.currentScreen,
-    backgroundColour: state => state.homeConfig.backgroundColour,
-    transitionDirection: state => state.homeConfig.transitionDirection,
+    backgroundColour: state => state.appConfig.backgroundColour,
+    transitionDirection: state => state.appConfig.transitionDirection,
+    gameCategories: () => gameCategories,
+    gameDifficulties: () => gameDifficulties,
     gameConfig: state => state.gameConfig,
+    gameCategory: state => gameCategories.find(cat => cat.id === state.gameConfig.category),
+    gameInProgress: (state) => {
+      const gameViews = ['gameTurn', 'gameStats'];
+      return gameViews.includes(state.appConfig.view);
+    },
     activeTurn: state => state.gameTurns.find(turn => !turn.started),
   },
   mutations: {
-    setAppState(state, newState) {
-      state.appState = newState;
-    },
-    configureHomeScreen(state, { key, value }) {
-      state.homeConfig[key] = value;
+    configureApp(state, { key, value }) {
+      state.appConfig[key] = value;
     },
     configureGame(state, { key, value }) {
       state.gameConfig[key] = value;
@@ -96,23 +91,19 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    goToScreen({ state, commit }, screenId) {
-      const currentScreen = homeScreens
-        .find(screen => screen.id === state.homeConfig.currentScreen);
-      const destinationScreen = homeScreens.find(screen => screen.id === screenId);
-      if (destinationScreen) {
-        const isNextScreen = destinationScreen.level > currentScreen.level;
-        const transitionDirection = isNextScreen ? 'moveleft' : 'moveright';
-        commit('configureHomeScreen', { key: 'transitionDirection', value: transitionDirection });
-        commit('configureHomeScreen', { key: 'currentScreen', value: screenId });
+    saveBackgroundColour({ commit }, value) {
+      commit('configureApp', { key: 'backgroundColour', value });
+    },
+    changeView({ state, commit }, nextView) {
+      if (viewOrder[nextView] !== undefined) {
+        const currentViewIndex = viewOrder[state.appConfig.view];
+        const nextViewIndex = viewOrder[nextView];
+        const transitionDirection = nextViewIndex > currentViewIndex ? 'moveleft' : 'moveright';
+        commit('configureApp', { key: 'transitionDirection', value: transitionDirection });
+        commit('configureApp', { key: 'view', value: nextView });
       }
     },
-    configureHomeScreen({ commit }, changes) {
-      Object.keys(changes).forEach((key) => {
-        commit('configureHomeScreen', { key, value: changes[key] });
-      });
-    },
-    configureGame({ commit }, changes) {
+    saveGamePreference({ commit }, changes) {
       Object.keys(changes).forEach((key) => {
         commit('configureGame', { key, value: changes[key] });
       });
@@ -121,7 +112,7 @@ export default new Vuex.Store({
     startGame({ state, commit }) {
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
-      commit('setAppState', 'turnInProgress');
+      commit('setAppState', 'gameTurn');
     },
     startCurrentTurn({ state, dispatch }) {
       dispatch('setActingWord');

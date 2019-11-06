@@ -25,12 +25,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      'configureGame',
-      'goToScreen',
+      'saveGamePreference',
     ]),
     setCategory(category) {
-      this.configureGame({ category });
-      this.$emit('setCategory');
+      this.saveGamePreference({ category });
+      this.$emit('done');
     },
     chooseRandom() {
       const randomIndex = Math.ceil(Math.random(0, 1) * this.gameCategories.length) - 1;
@@ -43,5 +42,5 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../../scss/section';
+@import '../../scss/layout/frame';
 </style>

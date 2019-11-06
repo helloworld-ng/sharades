@@ -1,0 +1,18 @@
+.moveleft-enter-active,
+.moveleft-leave-active,
+.moveright-enter-active,
+.moveright-leave-active {
+  transition: transform .3s;
+}
+.moveleft-enter {
+  transform: translateX(100%);
+}
+.moveleft-leave-to {
+  transform: translateX(-100%);
+}
+.moveright-enter {
+  transform: translateX(-100%);
+}
+.moveright-leave-to {
+  transform: translateX(100%);
+}

@@ -4,8 +4,8 @@
       <round-button text="Play" :textColour="backgroundColour" @click="$emit('clickedPlay')" />
     </main>
     <footer>
-      <span><a @click="goToScreen('ABOUT')">About</a></span>
-      <span><a @click="goToScreen('TUTORIAL')">Tutorial</a></span>
+      <span><a @click="changeView('about')">About</a></span>
+      <span><a @click="changeView('tutorial')">Gameplay</a></span>
     </footer>
   </section>
 </template>
@@ -23,14 +23,14 @@ export default {
     'backgroundColour',
   ]),
   methods: mapActions([
-    'goToScreen',
+    'changeView',
   ]),
 };
 </script>
 
 
 <style scoped lang="scss">
-@import '../../scss/section';
+@import '../../scss/layout/frame';
 
 main {
   align-items: center;

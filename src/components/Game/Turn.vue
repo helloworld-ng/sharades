@@ -69,7 +69,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/colours';
-@import '../../scss/section';
+@import '../../scss/layout/frame';
 
 .turn {
   padding: 30px;

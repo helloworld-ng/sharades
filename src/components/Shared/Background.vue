@@ -9,7 +9,7 @@ export default {
   name: 'Background',
   props: {
     sequence: Array,
-    pauseAnimation: Boolean,
+    animate: Boolean,
   },
   data() {
     return {
@@ -27,7 +27,7 @@ export default {
   created() {
     const stepCount = this.sequence.length;
     this.intervalFunction = setInterval(() => {
-      if (this.pauseAnimation) return;
+      if (!this.animate) return;
       const nextSequence = this.activeSequence + 1;
       this.activeSequence = (nextSequence < stepCount) ? nextSequence : 0;
       this.$emit('change', this.sequence[this.activeSequence]);

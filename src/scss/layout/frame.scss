@@ -1,5 +1,3 @@
-@import 'colours';
-
 section {
   height: 100%;
   display: flex;
@@ -33,9 +31,6 @@ section {
       &:last-child {
         text-align: right;
       }
-    }
-    a {
-      color: $yellow;
     }
   }
 }
