@@ -43,15 +43,16 @@ export default {
   color: $yellow;
   cursor: pointer;
   position: relative;
-  padding-bottom: 20px;
   text-align: center;
   figure {
     display: inline-block;
     width: 220px;
+    margin: 0;
+    padding: 10px 0 20px;
   }
   &__label {
     position: absolute;
-    bottom: 18px;
+    bottom: 0;
     left: 0;
     width: 100%;
   }

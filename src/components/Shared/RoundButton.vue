@@ -29,6 +29,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/colours';
+@import '../../scss/buttonreset';
 
 .button {
   display: inline-block;
