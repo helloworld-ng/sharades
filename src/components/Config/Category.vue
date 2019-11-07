@@ -26,10 +26,11 @@ export default {
   methods: {
     ...mapActions([
       'saveGamePreference',
+      'changeView',
     ]),
     setCategory(category) {
-      this.saveGamePreference({ category });
-      this.$emit('done');
+      this.saveGamePreference({ key: 'category', value: category });
+      this.changeView('Preferences');
     },
     chooseRandom() {
       const randomIndex = Math.ceil(Math.random(0, 1) * this.gameCategories.length) - 1;

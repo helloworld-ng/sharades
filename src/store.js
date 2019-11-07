@@ -1,15 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import animationSequence from './data/app/animation-sequence';
-import viewOrder from './data/app/view-order';
+import componentOrder from './data/app/component-order';
 import gameCategories from './data/game/categories';
 import gameDifficulties from './data/game/difficulties';
 
 Vue.use(Vuex);
 
 const appConfig = {
-  view: 'welcome',
-  transitionDirection: 'moveright',
+  activeComponent: 'Welcome',
+  transition: null,
   backgroundColour: animationSequence[0].backgroundColour,
 };
 
@@ -43,6 +43,12 @@ function Turn(team, count) {
   };
 }
 
+const getTransitionBetween = (previous, next) => {
+  const previousIndex = componentOrder[previous];
+  const nextIndex = componentOrder[next];
+  return nextIndex > previousIndex ? 'moveleft' : 'moveright';
+};
+
 export default new Vuex.Store({
   state: {
     appConfig,
@@ -53,24 +59,28 @@ export default new Vuex.Store({
     actingWord: null,
   },
   getters: {
-    view: state => state.appConfig.view,
     animationSequence: () => animationSequence,
-    backgroundColour: state => state.appConfig.backgroundColour,
-    transitionDirection: state => state.appConfig.transitionDirection,
     gameCategories: () => gameCategories,
     gameDifficulties: () => gameDifficulties,
+    activeComponent: state => state.appConfig.activeComponent,
+    backgroundColour: state => state.appConfig.backgroundColour,
+    transition: state => state.appConfig.transition,
     gameConfig: state => state.gameConfig,
     gameCategory: state => gameCategories.find(cat => cat.id === state.gameConfig.category),
     gameInProgress: (state) => {
-      const gameViews = ['gameTurn', 'gameStats'];
-      return gameViews.includes(state.appConfig.view);
+      const gameComponents = ['Turn', 'Stats'];
+      return gameComponents.includes(state.appConfig.activeComponent);
     },
     activeTurn: state => state.gameTurns.find(turn => !turn.completed),
     actingWord: state => state.actingWord,
   },
   mutations: {
-    configureApp(state, { key, value }) {
-      state.appConfig[key] = value;
+    setBackgroundColour(state, colour) {
+      state.appConfig.backgroundColour = colour;
+    },
+    setActiveComponent(state, { transition, component }) {
+      state.appConfig.transition = transition || 'moveleft';
+      state.appConfig.activeComponent = component;
     },
     configureGame(state, { key, value }) {
       state.gameConfig[key] = value;
@@ -97,33 +107,28 @@ export default new Vuex.Store({
   },
   actions: {
     saveBackgroundColour({ commit }, value) {
-      commit('configureApp', { key: 'backgroundColour', value });
+      commit('setBackgroundColour', value);
     },
-    changeView({ state, commit }, nextView) {
-      if (viewOrder[nextView] !== undefined) {
-        const currentViewIndex = viewOrder[state.appConfig.view];
-        const nextViewIndex = viewOrder[nextView];
-        const transitionDirection = nextViewIndex > currentViewIndex ? 'moveleft' : 'moveright';
-        commit('configureApp', { key: 'transitionDirection', value: transitionDirection });
-        commit('configureApp', { key: 'view', value: nextView });
+    changeView({ state, commit }, component) {
+      if (componentOrder[component] !== undefined) {
+        const transition = getTransitionBetween(state.appConfig.activeComponent, component);
+        commit('setActiveComponent', { component, transition });
       }
     },
-    saveGamePreference({ commit }, changes) {
-      Object.keys(changes).forEach((key) => {
-        commit('configureGame', { key, value: changes[key] });
-      });
-      commit('saveWordsForGame');
+    saveGamePreference({ commit }, { key, value }) {
+      commit('configureGame', { key, value });
     },
-    startGame({ state, commit }) {
+    startGame({ state, commit, dispatch }) {
+      commit('saveWordsForGame');
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
-      commit('configureApp', { key: 'view', value: 'gameTurn' });
+      dispatch('changeView', 'Turn');
     },
-    async startActiveTurn({ getters, dispatch, commit }) {
+    async startActiveTurn({ getters, dispatch }) {
       if (!getters.activeTurn.started) {
         dispatch('setActingWord');
         await getters.activeTurn.countdown();
-        commit('configureApp', { key: 'view', value: 'gameStats' });
+        dispatch('changeView', 'Stats');
       }
     },
     saveCorrectGuess({ state, getters, dispatch }) {

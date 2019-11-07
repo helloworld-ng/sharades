@@ -4,22 +4,16 @@
       <background :sequence="animationSequence"
        :animate="viewIs('welcome')" @change="onAnimationChange" />
     </div>
-    <transition :name="transitionDirection" mode="out-in">
-      <main class="app__content" id="game" v-if="gameInProgress">
-        <turn v-if="viewIs('gameTurn')" />
-        <stats v-if="viewIs('gameStats')" />
-      </main>
-      <main class="app__content" id="idle" v-else>
-        <header>
+    <main class="app__content">
+      <transition :name="transition" mode="out-in">
+        <header v-if="!gameInProgress">
           <wordmark :label="wordmarkLabel()" :animate="viewIs('welcome')" />
         </header>
-        <transition :name="transitionDirection" mode="out-in">
-          <welcome v-if="viewIs('welcome')" @play="changeView('category')" />
-          <category v-if="viewIs('category')" @done="changeView('preferences')" />
-          <preferences v-if="viewIs('preferences')" @done="startGame()" />
-        </transition>
-      </main>
-    </transition>
+      </transition>
+      <transition :name="transition" mode="out-in">
+        <component :is="activeComponent" />
+      </transition>
+    </main>
   </div>
 </template>
 
@@ -46,9 +40,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'view',
       'animationSequence',
-      'transitionDirection',
+      'activeComponent',
+      'transition',
       'gameInProgress',
       'gameCategory',
     ]),
@@ -56,17 +50,15 @@ export default {
   methods: {
     ...mapActions([
       'saveBackgroundColour',
-      'changeView',
-      'startGame',
     ]),
     viewIs(name) {
-      return this.view === name;
+      return this.activeComponent === name;
     },
     wordmarkLabel() {
-      switch (this.view) {
-        case 'category':
+      switch (this.activeComponent) {
+        case 'Category':
           return 'Choose a category';
-        case 'preferences':
+        case 'Preferences':
           return this.gameCategory.label;
         default:
           return 'Nigerian Charades';

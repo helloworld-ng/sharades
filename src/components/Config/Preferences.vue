@@ -3,21 +3,21 @@
     <article>
       <ul class="preferences">
         <li>
-          <number-picker label="Teams" v-model="teams" @input="updateGame()" />
+          <number-picker label="Teams" v-model="teams" @input="updateGame('teams')" />
         </li>
         <li>
-          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateGame()" />
+          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateGame('turnsPerTeam')" />
         </li>
         <li>
           <word-picker label="Mode" :options="gameDifficulties"
-           v-model="difficulty" @input="updateGame()" />
+           v-model="difficulty" @input="updateGame('difficulty')" />
         </li>
       </ul>
     </article>
     <footer>
       <span>
         <round-button text="Start" size="small" :textColour="backgroundColour"
-         @click="$emit('done')" />
+         @click="startGame()" />
       </span>
     </footer>
   </section>
@@ -50,10 +50,13 @@ export default {
   methods: {
     ...mapActions([
       'saveGamePreference',
+      'startGame',
     ]),
-    updateGame() {
-      const { difficulty, teams, turnsPerTeam } = this;
-      this.saveGamePreference({ difficulty, teams, turnsPerTeam });
+    updateGame(key) {
+      this.saveGamePreference({
+        key,
+        value: this[key],
+      });
     },
   },
 };
