@@ -2,12 +2,12 @@
   <div class="app">
     <div class="app__background">
       <background :sequence="animationSequence"
-       :animate="viewIs('welcome')" @change="onAnimationChange" />
+       :animate="viewIs('Welcome')" @change="onAnimationChange" />
     </div>
     <main class="app__content">
       <transition :name="transition" mode="out-in">
         <header v-if="!gameInProgress">
-          <wordmark :label="wordmarkLabel()" :animate="viewIs('welcome')" />
+          <wordmark :label="wordmarkLabel()" :animate="viewIs('Welcome')" />
         </header>
       </transition>
       <transition :name="transition" mode="out-in">

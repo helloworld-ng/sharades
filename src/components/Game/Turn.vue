@@ -1,5 +1,5 @@
 <template>
-  <section id="turn" class="frame" @click="onDoubleTap">
+  <section id="turn" class="frame" ref="stage">
     <header>
       <div class="turn__timer">
         {{ activeTurn.timeLeft }}s
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import SwipeListener from 'swipe-listener';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -38,8 +39,13 @@ export default {
       return this.activeTurn.correctGuesses.length;
     },
     footerContent() {
-      return this.activeTurn.started ? this.correctGuesses : 'Tap twice to start';
+      return this.activeTurn.started ? this.correctGuesses : 'Double tap to start';
     },
+  },
+  data() {
+    return {
+      swipeListener: null,
+    };
   },
   methods: {
     ...mapActions([
@@ -47,16 +53,46 @@ export default {
       'saveCorrectGuess',
       'changeActingWord',
     ]),
+    listenForDoubleTap() {
+      let firstTapWasRecent = false;
+      let firstTapTimeout;
+      this.$refs.stage.addEventListener('click', () => {
+        if (firstTapWasRecent) {
+          window.clearTimeout(firstTapTimeout);
+          firstTapWasRecent = false;
+          this.onDoubleTap();
+        } else {
+          firstTapWasRecent = true;
+          firstTapTimeout = setTimeout(() => {
+            firstTapWasRecent = false;
+          }, 300);
+        }
+      });
+    },
     onDoubleTap() {
       if (this.activeTurn.started) {
         this.saveCorrectGuess();
       } else {
         this.startActiveTurn();
+        this.listenForSwipe();
       }
     },
-    onSwipe() {
-      this.changeActingWord();
+    listenForSwipe() {
+      this.swipeListener = SwipeListener(this.$refs.stage);
+      this.$refs.stage.addEventListener('swipe', ({ detail: { directions } }) => {
+        if (directions.left) {
+          this.changeActingWord();
+        }
+      });
     },
+  },
+  mounted() {
+    this.listenForDoubleTap();
+  },
+  destroyed() {
+    if (this.swipeListener) {
+      this.swipeListener.off();
+    }
   },
 };
 </script>
