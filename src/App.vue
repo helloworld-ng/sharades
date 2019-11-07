@@ -6,8 +6,8 @@
     </div>
     <main class="app__content">
       <transition :name="transition" mode="out-in">
-        <header v-if="!gameInProgress">
-          <wordmark :label="wordmarkLabel()" :animate="viewIs('Welcome')" />
+        <header class="app__header" v-if="!gameInProgress">
+          <wordmark :label="wordmarkLabel" :animate="viewIs('Welcome')" />
         </header>
       </transition>
       <transition :name="transition" mode="out-in">
@@ -43,16 +43,11 @@ export default {
       'animationSequence',
       'activeComponent',
       'transition',
-      'gameInProgress',
       'gameCategory',
     ]),
-  },
-  methods: {
-    ...mapActions([
-      'saveBackgroundColour',
-    ]),
-    viewIs(name) {
-      return this.activeComponent === name;
+    gameInProgress() {
+      const gameComponents = ['Turn', 'Stats'];
+      return gameComponents.includes(this.activeComponent);
     },
     wordmarkLabel() {
       switch (this.activeComponent) {
@@ -63,6 +58,14 @@ export default {
         default:
           return 'Nigerian Charades';
       }
+    },
+  },
+  methods: {
+    ...mapActions([
+      'saveBackgroundColour',
+    ]),
+    viewIs(name) {
+      return this.activeComponent === name;
     },
     onAnimationChange(activeSequence) {
       const { backgroundColour } = activeSequence;

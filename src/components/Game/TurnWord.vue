@@ -31,7 +31,6 @@ export default {
     },
     lastGuessWasCorrect() {
       const { correctGuesses } = this.activeTurn;
-      console.log(correctGuesses.includes(this.cachedActingWord));
       return correctGuesses.includes(this.cachedActingWord);
     },
     showStrikethrough() {
