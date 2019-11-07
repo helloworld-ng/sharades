@@ -1,7 +1,7 @@
 // Fade
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-  -webkit-transition: opacity .5s;
+  transition: opacity 500ms;
+  -webkit-transition: opacity 500ms;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -12,8 +12,8 @@
 .moveleft-leave-active,
 .moveright-enter-active,
 .moveright-leave-active {
-  transition: transform .3s;
-  -webkit-transition: transform .3s;
+  transition: transform 700ms;
+  -webkit-transition: transform 700ms;
 }
 .moveleft-enter {
   transform: translateX(100%);

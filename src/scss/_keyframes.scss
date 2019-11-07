@@ -1,25 +1,42 @@
-$tagNames: '@keyframes', '@-webkit-keyframes';
-
 @mixin keyframes($animation) {
-  @each $index in $tagNames {
-    $tagName: index($tagNames, $index);
-    #{$tagName} #{$animation} {
-      @if $animation == 'grow-vertically' {
-        from { width: 0; }
-        to { width: 100%; }
-      }
-      @if $animation == 'fade-in' {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      @if $animation == 'fade-out' {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-      @if $animation == 'fade-out-down' {
-        from { opacity: 1; transform: translateY(0); }
-        to { opacity: 0; transform: translateY(100%); }
-      }
+  @if $animation == 'grow-vertically' {
+    @keyframes #{$animation} {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @-webkit-keyframes #{$animation} {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+  }
+  @if $animation == 'fade-in' {
+    @keyframes #{$animation} {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @-webkit-keyframes #{$animation} {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
+  @if $animation == 'fade-out' {
+    @keyframes #{$animation} {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @-webkit-keyframes #{$animation} {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  }
+  @if $animation == 'fade-out-down' {
+    @keyframes #{$animation} {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(100%); }
+    }
+    @-webkit-keyframes #{$animation} {
+      from { opacity: 1; -webkit-transform: translateY(0); }
+      to { opacity: 0; -webkit-transform: translateY(100%); }
     }
   }
 }
