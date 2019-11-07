@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import List from '../shared/List.vue';
+import List from '../global/List.vue';
 
 export default {
   name: 'CategoryChoice',

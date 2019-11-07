@@ -12,7 +12,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import RoundButton from '../shared/RoundButton.vue';
+import RoundButton from '../global/RoundButton.vue';
 
 export default {
   name: 'Welcome',

@@ -25,9 +25,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import NumberPicker from '../shared/Picker/NumberPicker.vue';
-import WordPicker from '../shared/Picker/WordPicker.vue';
-import RoundButton from '../shared/RoundButton.vue';
+import NumberPicker from '../global/Picker/NumberPicker.vue';
+import WordPicker from '../global/Picker/WordPicker.vue';
+import RoundButton from '../global/RoundButton.vue';
 
 export default {
   name: 'Preferences',

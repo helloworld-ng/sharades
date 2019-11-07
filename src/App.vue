@@ -19,7 +19,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import Background from './components/shared/Background.vue';
+import Background from './components/global/Background.vue';
 import Wordmark from './components/Home/Wordmark.vue';
 import Welcome from './components/Home/Welcome.vue';
 import Category from './components/Config/Category.vue';
