@@ -66,7 +66,8 @@ export default {
   flex: 1;
   list-style: none;
   text-align: center;
-  padding: 30px;
+  padding: 15px 0 30px;
+  width: 240px;
   margin: 0;
   display: flex;
   flex-direction: column;

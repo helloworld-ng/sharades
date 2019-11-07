@@ -1,7 +1,7 @@
 <template>
   <section id="welcome" class="frame">
     <article>
-      <round-button text="Play" :textColour="backgroundColour" @click="$emit('clickedPlay')" />
+      <round-button text="Play" :textColour="backgroundColour" @click="$emit('play')" />
     </article>
     <footer>
       <span><a @click="changeView('about')">About</a></span>

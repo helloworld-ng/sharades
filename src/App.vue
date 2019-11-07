@@ -14,7 +14,7 @@
           <wordmark :label="wordmarkLabel()" :animate="viewIs('welcome')" />
         </header>
         <transition :name="transitionDirection" mode="out-in">
-          <welcome v-if="viewIs('welcome')" />
+          <welcome v-if="viewIs('welcome')" @play="changeView('category')" />
           <category v-if="viewIs('category')" @done="changeView('preferences')" />
           <preferences v-if="viewIs('preferences')" @done="startGame()" />
         </transition>

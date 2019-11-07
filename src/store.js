@@ -112,7 +112,7 @@ export default new Vuex.Store({
     startGame({ state, commit }) {
       const { teams, turnsPerTeam } = state.gameConfig;
       commit('registerTurns', { teams, turnsPerTeam });
-      commit('setAppState', 'gameTurn');
+      commit('configureApp', { key: 'view', value: 'gameTurn' });
     },
     startCurrentTurn({ state, dispatch }) {
       dispatch('setActingWord');
