@@ -37,7 +37,7 @@ export default {
   line-height: 150px;
   border-radius: 50%;
   background: $yellow;
-  color: $green;
+  color: $blue;
   font-family: 'Helvetica Ultra Compressed', sans-serif;
   font-weight: normal;
   font-size: 48px;

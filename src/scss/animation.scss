@@ -1,6 +1,7 @@
 // Fade
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
+  -webkit-transition: opacity .5s;
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
@@ -12,16 +13,21 @@
 .moveright-enter-active,
 .moveright-leave-active {
   transition: transform .3s;
+  -webkit-transition: transform .3s;
 }
 .moveleft-enter {
   transform: translateX(100%);
+  -webkit-transform: translateX(100%);
 }
 .moveleft-leave-to {
   transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
 }
 .moveright-enter {
   transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
 }
 .moveright-leave-to {
   transform: translateX(100%);
+  -webkit-transform: translateX(100%);
 }

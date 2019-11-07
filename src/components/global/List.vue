@@ -2,7 +2,7 @@
   <div class="list">
     <ul>
       <li v-for="item in items" :key="get(item, 'valueProp')">
-        <a class="h2" @click="click(item)">
+        <a @click="click(item)">
           {{ get(item, 'labelProp') }}
         </a>
       </li>
@@ -38,6 +38,7 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/colours';
+@import '../../scss/textstyles';
 
 .list {
   ul {
@@ -50,6 +51,7 @@ export default {
       a {
         color: $yellow;
         text-transform: uppercase;
+        @include header(3);
       }
     }
   }
