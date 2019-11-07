@@ -42,6 +42,7 @@ export default {
   font-weight: normal;
   font-size: 48px;
   text-align: center;
+  text-transform: uppercase;
   &__green {
     color: $green;
   }

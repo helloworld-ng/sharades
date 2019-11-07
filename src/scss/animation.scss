@@ -1,3 +1,12 @@
+// Fade
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+// Move
 .moveleft-enter-active,
 .moveleft-leave-active,
 .moveright-enter-active,

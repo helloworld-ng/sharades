@@ -24,16 +24,20 @@ function Turn(team, count) {
   this.team = team;
   this.count = count;
   this.started = false;
-  this.timeLeft = 60;
+  this.completed = false;
+  this.timeLeft = 10;
   this.correctGuesses = [];
-  this.startTimer = () => {
-    const turnTimer = setTimeout(() => {
+  this.countdown = () => new Promise((resolve) => {
+    this.started = true;
+    const turnCounter = setInterval(() => {
       this.timeLeft -= 1;
       if (this.timeLeft === 0) {
-        window.clearTimeout(turnTimer);
+        this.completed = true;
+        window.clearInterval(turnCounter);
+        resolve();
       }
     }, 1000);
-  };
+  });
   this.saveCorrectGuess = (word) => {
     this.correctGuesses.push(word);
   };
@@ -61,7 +65,8 @@ export default new Vuex.Store({
       const gameViews = ['gameTurn', 'gameStats'];
       return gameViews.includes(state.appConfig.view);
     },
-    activeTurn: state => state.gameTurns.find(turn => !turn.started),
+    activeTurn: state => state.gameTurns.find(turn => !turn.completed),
+    actingWord: state => state.actingWord,
   },
   mutations: {
     configureApp(state, { key, value }) {
@@ -78,7 +83,7 @@ export default new Vuex.Store({
       }
     },
     saveWordsForGame(state) {
-      state.wordBank = ['One', 'Two', 'Three'];
+      state.wordBank = ['Mami Water', 'Danfo', 'Cut Your Hand'];
     },
     setActingWord(state, actingWord) {
       state.actingWord = actingWord;
@@ -114,12 +119,15 @@ export default new Vuex.Store({
       commit('registerTurns', { teams, turnsPerTeam });
       commit('configureApp', { key: 'view', value: 'gameTurn' });
     },
-    startCurrentTurn({ state, dispatch }) {
-      dispatch('setActingWord');
-      state.currentTurn.startTimer();
+    async startActiveTurn({ getters, dispatch, commit }) {
+      if (!getters.activeTurn.started) {
+        dispatch('setActingWord');
+        await getters.activeTurn.countdown();
+        commit('configureApp', { key: 'view', value: 'gameStats' });
+      }
     },
-    saveCorrectGuess({ state, dispatch }) {
-      state.currentTurn.saveCorrectGuess(state.actingWord);
+    saveCorrectGuess({ state, getters, dispatch }) {
+      getters.activeTurn.saveCorrectGuess(state.actingWord);
       dispatch('changeActingWord');
     },
     async setActingWord({ state, commit, dispatch }) {

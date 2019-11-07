@@ -1,28 +1,18 @@
 <template>
-  <section class="turn">
+  <section id="turn" class="frame" @click="onDoubleTap">
     <header>
-      <div class="turn__timer">{{ activeTurn.timeLeft }}</div>
-    </header>
-    <main>
-      <div class="turn__word h2">
-        <span v-if="activeTurn.started">
-          {{ actingWord }}
-        </span>
-        <span v-else>
-          {{ turnDescription  }}
-        </span>
+      <div class="turn__timer">
+        {{ activeTurn.timeLeft }}s
       </div>
-    </main>
+    </header>
+    <article>
+      <div class="turn__word">
+        {{ centerContent }}
+      </div>
+    </article>
     <footer>
-      <span v-if="activeTurn.started">
-        {{ activeTurn.correctGuesses.length }}
-      </span>
-      <span v-else>
-        <ul class="turn__instructions">
-          <li>Tap twice if you guess right</li>
-          <li>Swipe to change the word</li>
-          <li>Tap twice to start</li>
-        </ul>
+      <span class="turn__footer">
+        {{ footerContent }}
       </span>
     </footer>
   </section>
@@ -39,17 +29,21 @@ export default {
       'actingWord',
     ]),
     turnDescription() {
-      return `Team ${this.activeTurn.team} / Turn ${this.activeTurn.count}`;
+      return `Team ${this.activeTurn.team} ☞ Turn ${this.activeTurn.count}`;
     },
-  },
-  data() {
-    return {
-      startTimer: false,
-    };
+    centerContent() {
+      return this.activeTurn.started ? this.actingWord : this.turnDescription;
+    },
+    correctGuesses() {
+      return this.activeTurn.correctGuesses.length;
+    },
+    footerContent() {
+      return this.activeTurn.started ? this.correctGuesses : 'Tap twice to start';
+    },
   },
   methods: {
     ...mapActions([
-      'startCurrentTurn',
+      'startActiveTurn',
       'saveCorrectGuess',
       'changeActingWord',
     ]),
@@ -57,7 +51,7 @@ export default {
       if (this.activeTurn.started) {
         this.saveCorrectGuess();
       } else {
-        this.startCurrentTurn();
+        this.startActiveTurn();
       }
     },
     onSwipe() {
@@ -69,26 +63,20 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/colours';
+@import '../../scss/textstyles';
 @import '../../scss/layout/frame';
 
 .turn {
-  padding: 30px;
   &__label {
     color: $green;
   }
   &__word {
     color: $yellow;
+    text-transform: uppercase;
+    @include header(2);
   }
-  &--active {
-    &__label {
-      color: $neutral;
-    }
-    &__word {
-      color: $green;
-    }
-  }
-  &__start {
-    color: $green;
+  &__footer {
+    color: rgba(255,255,255,.7);
   }
 }
 </style>

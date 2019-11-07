@@ -1,0 +1,12 @@
+@mixin header($size: 1) {
+  font-family: 'Helvetica Ultra Compressed';
+  font-weight: normal;
+  margin: 0 0 5px;
+  letter-spacing: 0;
+  @if $size == 1 {
+    font-size: 80px;
+  }
+  @if $size == 2 {
+    font-size: 55px;
+  }
+}

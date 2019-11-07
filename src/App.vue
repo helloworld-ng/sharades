@@ -4,7 +4,7 @@
       <background :sequence="animationSequence"
        :animate="viewIs('welcome')" @change="onAnimationChange" />
     </div>
-    <transition name="fade">
+    <transition :name="transitionDirection" mode="out-in">
       <main class="app__content" id="game" v-if="gameInProgress">
         <turn v-if="viewIs('gameTurn')" />
         <stats v-if="viewIs('gameStats')" />

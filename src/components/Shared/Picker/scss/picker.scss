@@ -1,4 +1,5 @@
 @import '../../../../scss/colours';
+@import '../../../../scss/textstyles';
 
 .picker {
   display: flex;
@@ -22,13 +23,12 @@
     flex: 1;
   }
   &-value {
+    @include header(2);
     text-align: center;
-    font-family: 'Helvetica Ultra Compressed';
-    font-size: 50px;
+    text-transform: uppercase;
   }
   &-label {
     color: $yellow;
     display: block;
-    margin-top: 5px;
   }
 }

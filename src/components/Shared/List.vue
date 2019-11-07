@@ -49,6 +49,7 @@ export default {
       margin-bottom: 10px;
       a {
         color: $yellow;
+        text-transform: uppercase;
       }
     }
   }
