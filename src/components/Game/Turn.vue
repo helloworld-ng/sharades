@@ -1,50 +1,64 @@
 <template>
-  <section id="turn" class="frame" ref="stage">
-    <header>
-      <div class="turn__timer">
-        {{ activeTurn.timeLeft }}s
-      </div>
-    </header>
-    <article>
-      <div class="turn__word">
-        {{ centerContent }}
-      </div>
-    </article>
-    <footer>
-      <span class="turn__footer">
-        {{ footerContent }}
-      </span>
-    </footer>
+  <section id="turn">
+    <turn-stage
+      :listeners="listeners"
+      @doubleTap="onDoubleTap"
+      @swipe="onSwipe"
+      :pauseListeners="pauseListeners"
+    >
+      <header>
+        <turn-timer />
+      </header>
+      <article>
+        <turn-word
+          :placeholder="turnDescription"
+          :strikeLeft="lastSwipeDirection.left"
+          :strikeRight="lastSwipeDirection.right"
+          @animating="pauseListeners = true"
+          @notAnimating="pauseListeners = false"
+        />
+      </article>
+      <footer>
+        <turn-count placeholder="Double tap to start" />
+      </footer>
+    </turn-stage>
   </section>
 </template>
 
 <script>
-import SwipeListener from 'swipe-listener';
 import { mapGetters, mapActions } from 'vuex';
+import TurnStage from './TurnStage.vue';
+import TurnTimer from './TurnTimer.vue';
+import TurnWord from './TurnWord.vue';
+import TurnCount from './TurnCount.vue';
 
 export default {
   name: 'Turn',
+  components: {
+    TurnStage,
+    TurnTimer,
+    TurnWord,
+    TurnCount,
+  },
   computed: {
     ...mapGetters([
       'activeTurn',
-      'actingWord',
     ]),
     turnDescription() {
       return `Team ${this.activeTurn.team} ☞ Turn ${this.activeTurn.count}`;
     },
-    centerContent() {
-      return this.activeTurn.started ? this.actingWord : this.turnDescription;
-    },
-    correctGuesses() {
-      return this.activeTurn.correctGuesses.length;
-    },
-    footerContent() {
-      return this.activeTurn.started ? this.correctGuesses : 'Double tap to start';
+    listeners() {
+      return {
+        doubleTap: true,
+        swipe: this.activeTurn.started,
+      };
     },
   },
   data() {
     return {
       swipeListener: null,
+      lastSwipeDirection: {},
+      pauseListeners: false,
     };
   },
   methods: {
@@ -53,66 +67,24 @@ export default {
       'saveCorrectGuess',
       'changeActingWord',
     ]),
-    listenForDoubleTap() {
-      let firstTapWasRecent = false;
-      let firstTapTimeout;
-      this.$refs.stage.addEventListener('click', () => {
-        if (firstTapWasRecent) {
-          window.clearTimeout(firstTapTimeout);
-          firstTapWasRecent = false;
-          this.onDoubleTap();
-        } else {
-          firstTapWasRecent = true;
-          firstTapTimeout = setTimeout(() => {
-            firstTapWasRecent = false;
-          }, 300);
-        }
-      });
-    },
     onDoubleTap() {
       if (this.activeTurn.started) {
         this.saveCorrectGuess();
-      } else {
-        this.startActiveTurn();
-        this.listenForSwipe();
+        return;
       }
+      this.startActiveTurn();
     },
-    listenForSwipe() {
-      this.swipeListener = SwipeListener(this.$refs.stage);
-      this.$refs.stage.addEventListener('swipe', ({ detail: { directions } }) => {
-        if (directions.left) {
-          this.changeActingWord();
-        }
-      });
+    onSwipe(direction) {
+      this.lastSwipeDirection = direction;
+      this.changeActingWord();
     },
-  },
-  mounted() {
-    this.listenForDoubleTap();
-  },
-  destroyed() {
-    if (this.swipeListener) {
-      this.swipeListener.off();
-    }
   },
 };
 </script>
 
-<style scoped lang="scss">
-@import '../../scss/colours';
-@import '../../scss/textstyles';
-@import '../../scss/layout/frame';
-
-.turn {
-  &__label {
-    color: $green;
-  }
-  &__word {
-    color: $yellow;
-    text-transform: uppercase;
-    @include header(2);
-  }
-  &__footer {
-    color: rgba(255,255,255,.7);
-  }
+<style lang="scss" scoped>
+section {
+  width: 100%;
+  height: 100%;
 }
 </style>

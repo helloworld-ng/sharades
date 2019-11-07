@@ -8,14 +8,17 @@ import gameDifficulties from './data/game/difficulties';
 Vue.use(Vuex);
 
 const appConfig = {
-  activeComponent: 'Welcome',
-  transition: null,
+  // activeComponent: 'Welcome',
+  // transition: null,
+  activeComponent: 'Preferences',
+  transition: 'moveleft',
   backgroundColour: animationSequence[0].backgroundColour,
 };
 
 const gameConfig = {
   difficulty: 'easy',
-  category: null,
+  // category: null,
+  category: 'music',
   teams: 2,
   turnsPerTeam: 2,
 };
@@ -25,7 +28,7 @@ function Turn(team, count) {
   this.count = count;
   this.started = false;
   this.completed = false;
-  this.timeLeft = 10;
+  this.timeLeft = 60000;
   this.correctGuesses = [];
   this.countdown = () => new Promise((resolve) => {
     this.started = true;

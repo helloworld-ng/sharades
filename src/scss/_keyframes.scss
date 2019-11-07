@@ -1,0 +1,20 @@
+@mixin keyframes($animation) {
+  @keyframes #{$animation} {
+    @if $animation == 'grow-vertically' {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @if $animation == 'fade-in' {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @if $animation == 'fade-out' {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @if $animation == 'fade-out-down' {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(100%); }
+    }
+  }
+}
