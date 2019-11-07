@@ -5,11 +5,11 @@
        :animate="viewIs('welcome')" @change="onAnimationChange" />
     </div>
     <transition name="fade">
-      <main id="game" v-if="gameInProgress">
+      <main class="app__content" id="game" v-if="gameInProgress">
         <turn v-if="viewIs('gameTurn')" />
         <stats v-if="viewIs('gameStats')" />
       </main>
-      <main id="idle" v-else>
+      <main class="app__content" id="idle" v-else>
         <header>
           <wordmark :label="wordmarkLabel()" :animate="viewIs('welcome')" />
         </header>
@@ -84,6 +84,5 @@ export default {
 @import '/scss/reset';
 @import '/scss/type';
 @import '/scss/layout/app';
-@import '/scss/layout/frame';
 @import '/scss/animation';
 </style>

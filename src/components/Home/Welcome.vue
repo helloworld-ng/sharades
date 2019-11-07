@@ -1,11 +1,11 @@
 <template>
-  <section id="welcome">
-    <main>
+  <section id="welcome" class="frame">
+    <article>
       <round-button text="Play" :textColour="backgroundColour" @click="$emit('clickedPlay')" />
-    </main>
+    </article>
     <footer>
       <span><a @click="changeView('about')">About</a></span>
-      <span><a @click="changeView('tutorial')">Gameplay</a></span>
+      <span><a @click="changeView('gameplay')">Gameplay</a></span>
     </footer>
   </section>
 </template>
@@ -31,8 +31,4 @@ export default {
 
 <style scoped lang="scss">
 @import '../../scss/layout/frame';
-
-main {
-  align-items: center;
-}
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <section id="preferences" class="preferences">
-    <main>
-      <ul class="preferences__list">
+  <section id="preferences" class="frame">
+    <article>
+      <ul class="preferences">
         <li>
           <number-picker label="Teams" v-model="teams" @input="updateGame()" />
         </li>
@@ -10,10 +10,10 @@
         </li>
         <li>
           <word-picker label="Mode" :options="gameDifficulties"
-          v-model="difficulty" @input="updateGame()" />
+           v-model="difficulty" @input="updateGame()" />
         </li>
       </ul>
-    </main>
+    </article>
     <footer>
       <span>
         <round-button text="Start" size="small" :textColour="backgroundColour"
@@ -63,18 +63,16 @@ export default {
 @import '../../scss/layout/frame';
 
 .preferences {
-  &__list {
-    flex: 1;
-    list-style: none;
+  flex: 1;
+  list-style: none;
+  text-align: center;
+  padding: 30px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  > li {
     text-align: center;
-    padding: 30px;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    > li {
-      text-align: center;
-    }
   }
 }
 </style>

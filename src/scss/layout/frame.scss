@@ -1,4 +1,4 @@
-section {
+.frame {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@ section {
     justify-content: center;
   }
 
-  main {
+  article {
     flex: 1;
     display: flex;
     flex-direction: column;

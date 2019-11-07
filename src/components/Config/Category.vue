@@ -1,8 +1,8 @@
 <template>
-  <section id="choose-category">
-    <main>
+  <section id="choose-category" class="frame">
+    <article>
       <list :items="gameCategories" @click="setCategory" />
-    </main>
+    </article>
     <footer>
       <span><a @click="chooseRandom()">Random</a></span>
     </footer>
