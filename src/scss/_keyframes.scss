@@ -1,12 +1,12 @@
 @mixin keyframes($animation) {
   @if $animation == 'grow-vertically' {
     @keyframes #{$animation} {
-      from { width: 0; }
-      to { width: 100%; }
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
     @-webkit-keyframes #{$animation} {
-      from { width: 0; }
-      to { width: 100%; }
+      from { -webkit-transform: scaleX(0); }
+      to { -webkit-transform: scaleX(1); }
     }
   }
   @if $animation == 'fade-in' {

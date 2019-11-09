@@ -47,8 +47,9 @@ export default {
     listenForDoubleTap() {
       if (this.doubleTapSetup) return;
       const { stage } = this.$refs;
-      const tapEvents = ['click', 'touchstart'];
-      tapEvents.forEach(event => stage.addEventListener(event, () => {
+      const isTouchDevice = 'ontouchstart' in document.documentElement;
+      const tapEvent = isTouchDevice ? 'touchstart' : 'click';
+      stage.addEventListener(tapEvent, () => {
         if (this.pauseListeners) return;
         if (this.firstTapWasRecent) {
           window.clearTimeout(this.firstTapTimeout);
@@ -60,7 +61,7 @@ export default {
             this.firstTapWasRecent = false;
           }, 300);
         }
-      }));
+      });
       this.doubleTapSetup = true;
     },
     listenForSwipe() {

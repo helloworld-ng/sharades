@@ -18,8 +18,8 @@ export default {
       }
     }
   },
-  saveWordsForGame(state) {
-    state.wordBank = ['Mami Water', 'Danfo', 'Cut Your Hand'];
+  saveWordsForGame(state, words) {
+    state.wordBank = words;
   },
   setActingWord(state, actingWord) {
     state.actingWord = actingWord;

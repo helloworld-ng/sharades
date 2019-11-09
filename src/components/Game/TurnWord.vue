@@ -82,16 +82,18 @@ export default {
   position: relative;
   text-transform: uppercase;
   transition: opacity;
-  animation: fade-in 400ms;
+  animation: fade-in 300ms;
+  text-align: center;
   &.fade-out {
-    animation: fade-out 500ms;
+    animation: fade-out 300ms;
   }
   &.fade-out-down {
-    animation: fade-out-down 500ms;
+    animation: fade-out-down 300ms;
   }
   &__letters {
     @include header(2);
     color: $offwhite;
+    line-height: .8;
     .active & {
       color: $yellow;
     }
