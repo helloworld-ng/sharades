@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'TurnCount',
   props: {
-    placeholder: String,
+    placeholder: [String, Number],
   },
   computed: {
     ...mapGetters([

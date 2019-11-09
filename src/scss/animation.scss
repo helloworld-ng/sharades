@@ -12,22 +12,26 @@
 .moveleft-leave-active,
 .moveright-enter-active,
 .moveright-leave-active {
-  transition: transform 400ms;
-  -webkit-transition: transform 400ms;
+  transition: 400ms;
+  -webkit-transition: 400ms;
 }
 .moveleft-enter {
   transform: translateX(100%);
   -webkit-transform: translateX(100%);
+  opacity: 1;
 }
 .moveleft-leave-to {
   transform: translateX(-100%);
   -webkit-transform: translateX(-100%);
+  opacity: 0;
 }
 .moveright-enter {
   transform: translateX(-100%);
   -webkit-transform: translateX(-100%);
+  opacity: 1;
 }
 .moveright-leave-to {
   transform: translateX(100%);
   -webkit-transform: translateX(100%);
+  opacity: 0;
 }

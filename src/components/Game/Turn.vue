@@ -19,7 +19,7 @@
         />
       </article>
       <footer>
-        <turn-count placeholder="Double tap to start" />
+        <turn-count :placeholder="countPlaceholder" />
       </footer>
     </turn-stage>
   </section>
@@ -53,12 +53,17 @@ export default {
         swipe: this.activeTurn.started,
       };
     },
+    countPlaceholder() {
+      const countDownStarted = this.timeUntilStart !== null;
+      return countDownStarted ? this.timeUntilStart : 'Double tap to start';
+    },
   },
   data() {
     return {
       swipeListener: null,
       lastSwipeDirection: {},
       pauseListeners: false,
+      timeUntilStart: null,
     };
   },
   methods: {
@@ -70,9 +75,21 @@ export default {
     onDoubleTap() {
       if (this.activeTurn.started) {
         this.saveCorrectGuess();
-        return;
+      } else {
+        this.start();
       }
-      this.startActiveTurn();
+    },
+    start() {
+      setTimeout(() => {
+        this.timeUntilStart = 3;
+        const startCountdown = setInterval(() => {
+          this.timeUntilStart -= 1;
+          if (this.timeUntilStart === 0) {
+            this.startActiveTurn();
+            window.clearInterval(startCountdown);
+          }
+        }, 1000);
+      }, 300);
     },
     onSwipe(direction) {
       this.lastSwipeDirection = direction;

@@ -1,7 +1,9 @@
 export default {
-  activeComponent: 'Welcome',
+  // activeComponent: 'Welcome',
+  activeComponent: 'Preferences',
   transition: 'moveleft',
-  category: null,
+  // category: null,
+  category: 'nollywood',
   difficulty: 'easy',
   teams: 2,
   turnsPerTeam: 2,

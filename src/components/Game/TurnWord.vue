@@ -1,7 +1,11 @@
 <template>
   <div class="turn-word" :class="classObject">
-    <span class="turn-word__letters">{{ displayedWord }}</span>
-    <span v-if="showStrikethrough" :class="strikethroughClass"></span>
+    <span class="turn-word__display">
+      <transition name="fade" mode="out-in">
+        <span key="placeholder" v-if="!isActive">{{ placeholder }}</span>
+        <span class="yellow" key="actingWord" v-else>{{ cachedActingWord }}</span>
+      </transition>
+    </span>
   </div>
 </template>
 
@@ -32,15 +36,6 @@ export default {
     lastGuessWasCorrect() {
       const { correctGuesses } = this.activeTurn;
       return correctGuesses.includes(this.cachedActingWord);
-    },
-    showStrikethrough() {
-      return this.isAnimating && !this.lastGuessWasCorrect;
-    },
-    strikethroughClass() {
-      return `strike strike--${this.strikeRight ? 'right' : 'left'}`;
-    },
-    displayedWord() {
-      return this.isActive ? this.cachedActingWord : this.placeholder;
     },
     classObject() {
       return {
@@ -81,38 +76,21 @@ export default {
 .turn-word {
   position: relative;
   text-transform: uppercase;
-  transition: opacity;
   animation: fade-in 300ms;
   text-align: center;
   &.fade-out {
     animation: fade-out 300ms;
   }
   &.fade-out-down {
-    animation: fade-out-down 300ms;
+    animation: fade-out-down 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
   }
-  &__letters {
+  &__display {
     @include header(2);
     color: $offwhite;
     line-height: .8;
-    .active & {
+    > .yellow {
       color: $yellow;
     }
-  }
-}
-
-.strike {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  height: 5px;
-  transform: scale(1.1);
-  background: white;
-  animation: grow-vertically 300ms;
-  &--left {
-    right: 0;
-  }
-  &--right {
-    left: 0;
   }
 }
 </style>
