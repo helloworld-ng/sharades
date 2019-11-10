@@ -16,8 +16,12 @@
     </article>
     <footer>
       <span>
-        <round-button text="Start" size="small" :textColour="backgroundColour"
-         @click="startGame()" />
+        <round-button
+          text="Next"
+          size="small"
+          :textColour="backgroundColour"
+          @click="startGame()"
+        />
       </span>
     </footer>
   </section>
@@ -69,7 +73,7 @@ export default {
   flex: 1;
   list-style: none;
   text-align: center;
-  padding: 15px 0 30px;
+  padding: 30px 0 45px;
   width: 240px;
   margin: 0;
   display: flex;

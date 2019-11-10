@@ -6,7 +6,7 @@ export default {
   saveBackgroundColour({ commit }, value) {
     commit('setBackgroundColour', value);
   },
-  changeView({ state, commit }, component) {
+  changeComponent({ state, commit }, component) {
     if (componentOrder[component] !== undefined) {
       const transition = getTransition(state.appConfig.activeComponent, component);
       commit('setActiveComponent', { component, transition });
@@ -25,14 +25,14 @@ export default {
     dispatch('saveWordsForGame');
     const { teams, turnsPerTeam, turnDuration } = state.gameConfig;
     commit('registerTurns', { teams, turnsPerTeam, turnDuration });
-    dispatch('changeView', 'Turn');
+    dispatch('changeComponent', 'Game');
   },
-  async startActiveTurn({ getters, dispatch }) {
-    if (!getters.activeTurn.started) {
+  playTurn({ getters, dispatch }) {
+    return new Promise(async (resolve) => {
       dispatch('setActingWord');
-      await getters.activeTurn.countdown();
-      dispatch('changeView', 'Stats');
-    }
+      await getters.activeTurn.countdownTurn();
+      resolve();
+    });
   },
   saveCorrectGuess({ state, getters, dispatch }) {
     getters.activeTurn.saveCorrectGuess(state.actingWord);

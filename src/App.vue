@@ -5,7 +5,7 @@
        :animate="viewIs('Welcome')" @change="onAnimationChange" />
     </div>
     <main class="app__content">
-      <transition :name="transition" mode="out-in">
+      <transition :name="transition">
         <header class="app__header" v-if="!gameInProgress">
           <wordmark :label="wordmarkLabel" :animate="viewIs('Welcome')" />
         </header>
@@ -24,8 +24,7 @@ import Wordmark from './components/Home/Wordmark.vue';
 import Welcome from './components/Home/Welcome.vue';
 import Category from './components/Config/Category.vue';
 import Preferences from './components/Config/Preferences.vue';
-import Turn from './components/Game/Turn.vue';
-import Stats from './components/Game/Stats.vue';
+import Game from './components/Game/Game.vue';
 
 export default {
   name: 'app',
@@ -35,8 +34,7 @@ export default {
     Welcome,
     Category,
     Preferences,
-    Turn,
-    Stats,
+    Game,
   },
   computed: {
     ...mapGetters([
@@ -46,8 +44,7 @@ export default {
       'gameCategory',
     ]),
     gameInProgress() {
-      const gameComponents = ['Turn', 'Stats'];
-      return gameComponents.includes(this.activeComponent);
+      return this.activeComponent === 'Game';
     },
     wordmarkLabel() {
       switch (this.activeComponent) {

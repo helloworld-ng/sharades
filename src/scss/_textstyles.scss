@@ -3,6 +3,8 @@
   font-weight: normal;
   margin: 0 0 5px;
   letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 0.8;
   @if $size == 1 {
     font-size: 80px;
   }
@@ -11,5 +13,11 @@
   }
   @if $size == 3 {
     font-size: 48px;
+  }
+  @if $size == 4 {
+    font-size: 36px;
+  }
+  @if $size == 5 {
+    font-size: 28px;
   }
 }

@@ -14,8 +14,8 @@ export default {
       type: Object,
       default() {
         return {
-          doubleTap: false,
-          swipe: false,
+          doubleTap: true,
+          swipe: true,
         };
       },
     },
@@ -80,5 +80,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../scss/layout/frame';
+@import '../../../scss/layout/frame';
 </style>

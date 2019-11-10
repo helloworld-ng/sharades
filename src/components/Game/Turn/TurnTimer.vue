@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../../scss/colours';
+@import '../../../scss/colours';
 
 .turn-timer {
   color: $offwhite;

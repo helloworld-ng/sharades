@@ -1,7 +1,6 @@
 <template>
   <section id="turn">
     <turn-stage
-      :listeners="listeners"
       @doubleTap="onDoubleTap"
       @swipe="onSwipe"
       :pauseListeners="pauseListeners"
@@ -11,7 +10,6 @@
       </header>
       <article>
         <turn-word
-          :placeholder="turnDescription"
           :strikeLeft="lastSwipeDirection.left"
           :strikeRight="lastSwipeDirection.right"
           @animating="pauseListeners = true"
@@ -19,7 +17,7 @@
         />
       </article>
       <footer>
-        <turn-count :placeholder="countPlaceholder" />
+        <turn-score />
       </footer>
     </turn-stage>
   </section>
@@ -30,7 +28,7 @@ import { mapGetters, mapActions } from 'vuex';
 import TurnStage from './TurnStage.vue';
 import TurnTimer from './TurnTimer.vue';
 import TurnWord from './TurnWord.vue';
-import TurnCount from './TurnCount.vue';
+import TurnScore from './TurnScore.vue';
 
 export default {
   name: 'Turn',
@@ -38,37 +36,23 @@ export default {
     TurnStage,
     TurnTimer,
     TurnWord,
-    TurnCount,
+    TurnScore,
   },
   computed: {
     ...mapGetters([
       'activeTurn',
     ]),
-    turnDescription() {
-      return `Team ${this.activeTurn.team} ☞ Turn ${this.activeTurn.count}`;
-    },
-    listeners() {
-      return {
-        doubleTap: true,
-        swipe: this.activeTurn.started,
-      };
-    },
-    countPlaceholder() {
-      const countDownStarted = this.timeUntilStart !== null;
-      return countDownStarted ? this.timeUntilStart : 'Double tap to start';
-    },
   },
   data() {
     return {
       swipeListener: null,
       lastSwipeDirection: {},
       pauseListeners: false,
-      timeUntilStart: null,
     };
   },
   methods: {
     ...mapActions([
-      'startActiveTurn',
+      'playTurn',
       'saveCorrectGuess',
       'changeActingWord',
     ]),
@@ -79,22 +63,14 @@ export default {
         this.start();
       }
     },
-    start() {
-      setTimeout(() => {
-        this.timeUntilStart = 3;
-        const startCountdown = setInterval(() => {
-          this.timeUntilStart -= 1;
-          if (this.timeUntilStart === 0) {
-            this.startActiveTurn();
-            window.clearInterval(startCountdown);
-          }
-        }, 1000);
-      }, 300);
-    },
     onSwipe(direction) {
       this.lastSwipeDirection = direction;
       this.changeActingWord();
     },
+  },
+  async created() {
+    await this.playTurn();
+    this.$emit('turnEnded');
   },
 };
 </script>

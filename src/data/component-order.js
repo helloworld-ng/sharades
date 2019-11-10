@@ -4,6 +4,5 @@ export default {
   Gameplay: 1,
   Category: 1,
   Preferences: 2,
-  Turn: 3,
-  Stats: 4,
+  Game: 3,
 };

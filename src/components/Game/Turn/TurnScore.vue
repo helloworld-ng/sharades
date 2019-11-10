@@ -1,6 +1,6 @@
 <template>
-  <div class="turn-count" :class="{ active: active }">
-    {{ text }}
+  <div class="turn-score" :class="{ active: active }">
+    {{ this.score }}
   </div>
 </template>
 
@@ -9,30 +9,24 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'TurnCount',
-  props: {
-    placeholder: [String, Number],
-  },
   computed: {
     ...mapGetters([
       'activeTurn',
     ]),
-    count() {
+    score() {
       return this.activeTurn.correctGuesses.length;
     },
     active() {
       return this.activeTurn.started;
-    },
-    text() {
-      return this.active ? this.count : this.placeholder;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../../scss/colours';
+@import '../../../scss/colours';
 
-.turn-count {
+.turn-score {
   color: $mutedwhite;
   &.active {
     color: white;

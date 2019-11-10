@@ -1,12 +1,12 @@
 <template>
-  <div class="stats">
-    Game Stats
+  <div class="turn-stats">
+    Turn Stats
   </div>
 </template>
 
 <script>
 export default {
-  name: 'GameStats',
+  name: 'TurnStats',
 };
 </script>
 

@@ -1,11 +1,15 @@
 <template>
   <section id="welcome" class="frame">
     <article>
-      <round-button text="Play" :textColour="backgroundColour" @click="changeView('Category')" />
+      <round-button
+        text="Play"
+        :textColour="backgroundColour"
+        @click="changeComponent('Category')"
+      />
     </article>
     <footer>
-      <span><a @click="changeView('About')">About</a></span>
-      <span><a @click="changeView('Gameplay')">Gameplay</a></span>
+      <span><a @click="changeComponent('About')">About</a></span>
+      <span><a @click="changeComponent('Gameplay')">Gameplay</a></span>
     </footer>
   </section>
 </template>
@@ -23,7 +27,7 @@ export default {
     'backgroundColour',
   ]),
   methods: mapActions([
-    'changeView',
+    'changeComponent',
   ]),
 };
 </script>

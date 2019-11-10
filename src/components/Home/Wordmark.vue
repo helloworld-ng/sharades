@@ -48,7 +48,7 @@ export default {
   text-align: center;
   figure {
     display: inline-block;
-    width: 220px;
+    width: 150px;
     margin: 0;
     padding: 10px 0 20px;
   }

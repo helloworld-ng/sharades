@@ -8,4 +8,5 @@ export default {
   teams: 2,
   turnsPerTeam: 2,
   turnDuration: 60,
+  // turnDuration: 10,
 };
