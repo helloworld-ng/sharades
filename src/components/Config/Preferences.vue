@@ -16,11 +16,7 @@
     </article>
     <footer>
       <span>
-        <round-button
-          text="Next"
-          size="small"
-          :textColour="backgroundColour"
-          @click="startGame()"
+        <round-button text="Next" size="small" @click="startGame()"
         />
       </span>
     </footer>

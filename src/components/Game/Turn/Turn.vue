@@ -1,8 +1,7 @@
 <template>
   <section id="turn">
     <turn-stage
-      @doubleTap="onDoubleTap"
-      @swipe="onSwipe"
+      @swipe="onSkipWord"
       :pauseListeners="pauseListeners"
     >
       <header>
@@ -17,7 +16,9 @@
         />
       </article>
       <footer>
-        <turn-score />
+        <div>
+          <round-button text="Got it!" size="small" @click="onCorrectGuess" />
+        </div>
       </footer>
     </turn-stage>
   </section>
@@ -28,7 +29,7 @@ import { mapGetters, mapActions } from 'vuex';
 import TurnStage from './TurnStage.vue';
 import TurnTimer from './TurnTimer.vue';
 import TurnWord from './TurnWord.vue';
-import TurnScore from './TurnScore.vue';
+import RoundButton from '../../global/RoundButton.vue';
 
 export default {
   name: 'Turn',
@@ -36,11 +37,12 @@ export default {
     TurnStage,
     TurnTimer,
     TurnWord,
-    TurnScore,
+    RoundButton,
   },
   computed: {
     ...mapGetters([
       'activeTurn',
+      'actingWord',
     ]),
   },
   data() {
@@ -52,24 +54,24 @@ export default {
   },
   methods: {
     ...mapActions([
-      'playTurn',
-      'correctlyGuessed',
+      'playActiveTurn',
+      'saveCorrectGuess',
       'skipWord',
     ]),
-    onDoubleTap() {
+    onCorrectGuess() {
       if (this.activeTurn.started) {
-        this.correctlyGuessed();
+        this.saveCorrectGuess(this.actingWord);
       } else {
         this.start();
       }
     },
-    onSwipe(direction) {
+    onSkipWord(direction) {
       this.lastSwipeDirection = direction;
-      this.skipWord();
+      this.skipWord(this.actingWord);
     },
   },
   async created() {
-    await this.playTurn();
+    await this.playActiveTurn();
     this.$emit('turnEnded');
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="turn-timer" :class="{ active: activeTurn.started }">
-    <span>{{ activeTurn.timeLeft }}s</span>
+    <h5>{{ activeTurn.timeLeft }}</h5>
   </div>
 </template>
 

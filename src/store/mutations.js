@@ -18,25 +18,33 @@ export default {
       }
     }
   },
-  saveWordsForGame(state, words) {
+  populateWordBank(state, words) {
     state.wordBank = words;
   },
   setActingWord(state, actingWord) {
     state.actingWord = actingWord;
   },
-  saveWordToTurn(state, turn) {
-    turn.saveWord(state.actingWord);
+  saveUsedWordToTurn(state, { turn, word }) {
+    turn.saveUsedWord(word);
   },
-  saveCorrectGuess(state, turn) {
-    turn.saveCorrectGuess(state.actingWord);
+  saveCorrectGuessToTurn(state, { turn, word }) {
+    turn.saveCorrectGuess(word);
+  },
+  removeCorrectGuess(state, { turn, word }) {
+    turn.removeCorrectGuess(word);
   },
   addToUsedPile(state, word) {
-    state.usedPile.push(word);
+    if (!state.usedPile.includes(word)) {
+      state.usedPile.push(word);
+    }
   },
-  addToDiscardPile(state, word) {
-    state.discardPile.push(word);
+  addToDiscardPile(state, wordToRemove) {
+    if (!state.discardPile.includes(wordToRemove)) {
+      state.discardPile.push(wordToRemove);
+      state.wordBank = state.wordBank.filter(word => word !== wordToRemove);
+    }
   },
-  removeFromWordBank(state, wordToRemove) {
-    state.wordBank = state.wordBank.filter(word => word !== wordToRemove);
+  removeFromDiscardPile(state, wordToRemove) {
+    state.discardPile = state.discardPile.filter(word => word !== wordToRemove);
   },
 };

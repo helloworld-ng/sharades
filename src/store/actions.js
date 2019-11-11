@@ -15,48 +15,74 @@ export default {
   saveGamePreference({ commit }, { key, value }) {
     commit('configureGame', { key, value });
   },
-  saveWordsForGame({ commit }) {
+  populateWordBank({ commit }) {
     // const { category, difficulty } = state.gameConfig;
     // const words = getWords({ category, difficulty });
     const words = getWords({});
-    commit('saveWordsForGame', words);
+    commit('populateWordBank', words);
   },
   startGame({ state, commit, dispatch }) {
-    dispatch('saveWordsForGame');
+    dispatch('populateWordBank');
     const { teams, turnsPerTeam, turnDuration } = state.gameConfig;
     commit('registerTurns', { teams, turnsPerTeam, turnDuration });
+    dispatch('setNextTurnActive');
+    dispatch('changeActingWord');
     dispatch('changeComponent', 'Game');
   },
-  playTurn({ getters, dispatch }) {
+  setNextTurnActive({ state }) {
+    const nextTurn = state.gameTurns.find(turn => !turn.started);
+    nextTurn.ready();
+  },
+  playActiveTurn({ getters }) {
     return new Promise(async (resolve) => {
-      dispatch('setActingWord');
-      await getters.activeTurn.countdownTurn();
+      await getters.activeTurn.countdown();
       resolve();
     });
   },
-  skipWord({ commit, dispatch, getters }, word) {
-    commit('saveWordToTurn', getters.activeTurn);
-    commit('addToUsedPile', word);
+  readyNextTurn({ dispatch }) {
+    dispatch('endPreviousTurn');
+    dispatch('setNextTurnActive');
     dispatch('changeActingWord');
   },
-  correctlyGuessed({ commit, dispatch, getters }, word) {
-    commit('saveCorrectGuess', getters.activeTurn);
-    commit('addToUsedPile', word);
-    commit('addToDiscardPile', word);
-    dispatch('changeActingWord');
-  },
-  async setActingWord({ state, commit, dispatch }) {
-    if (state.wordBank.length === 0) {
-      await dispatch('resetWords');
+  endPreviousTurn({ getters }) {
+    if (getters.activeTurn) {
+      getters.activeTurn.end();
     }
-    const randomIndex = Math.ceil(Math.random(0, 1) * state.wordBank.length) - 1;
-    commit('setActingWord', state.wordBank[randomIndex]);
   },
-  changeActingWord({ state, commit, dispatch }) {
-    commit('removeFromWordBank', state.actingWord);
-    dispatch('setActingWord');
+  skipWord({ commit, dispatch }, word) {
+    commit('addToUsedPile', word);
+    dispatch('changeActingWord');
   },
-  resetWords({ dispatch }) {
-    dispatch('saveWordsForGame');
+  saveCorrectGuess({ commit, dispatch, getters }, word) {
+    commit('saveCorrectGuessToTurn', {
+      turn: getters.activeTurn,
+      word,
+    });
+    commit('addToUsedPile', word);
+    if (!getters.activeTurn.completed) {
+      commit('addToDiscardPile', word);
+      dispatch('changeActingWord');
+    }
+  },
+  undoCorrectGuess({ commit, getters }, word) {
+    commit('removeCorrectGuess', {
+      turn: getters.activeTurn,
+      word,
+    });
+    commit('removeFromDiscardPile', word);
+  },
+  changeActingWord({ state, commit, getters }) {
+    if (state.wordBank.length === 0) {
+      commit('populateWordBank');
+    }
+    const { usedWords } = getters.activeTurn;
+    const pool = state.wordBank.filter(word => !usedWords.includes(word));
+    const randomIndex = Math.ceil(Math.random(0, 1) * pool.length) - 1;
+    const word = pool[randomIndex];
+    commit('setActingWord', word);
+    commit('saveUsedWordToTurn', {
+      turn: getters.activeTurn,
+      word,
+    });
   },
 };

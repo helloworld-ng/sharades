@@ -5,17 +5,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'RoundButton',
   props: {
-    text: String,
+    text: [String, Number],
     textColour: String,
     size: String,
+    muted: Boolean,
   },
   computed: {
+    ...mapGetters([
+      'backgroundColour',
+    ]),
     className() {
       let className = 'button';
-      const additionalStyles = [this.textColour, this.size];
+      const colour = this.textColour || this.backgroundColour;
+      const brightness = this.muted && 'muted';
+      const additionalStyles = [colour, this.size, brightness];
       additionalStyles.forEach((style) => {
         if (style) {
           className += ` button__${style}`;
@@ -57,6 +65,9 @@ export default {
     height: 100px;
     line-height: 100px;
     font-size: 36px;
+  }
+  &__muted {
+    background: $mutedwhite;
   }
 }
 </style>

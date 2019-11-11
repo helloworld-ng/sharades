@@ -1,11 +1,7 @@
 <template>
   <section id="welcome" class="frame">
     <article>
-      <round-button
-        text="Play"
-        :textColour="backgroundColour"
-        @click="changeComponent('Category')"
-      />
+      <round-button text="Play" @click="changeComponent('Category')" />
     </article>
     <footer>
       <span><a @click="changeComponent('About')">About</a></span>
@@ -15,7 +11,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import RoundButton from '../global/RoundButton.vue';
 
 export default {
@@ -23,9 +19,6 @@ export default {
   components: {
     RoundButton,
   },
-  computed: mapGetters([
-    'backgroundColour',
-  ]),
   methods: mapActions([
     'changeComponent',
   ]),

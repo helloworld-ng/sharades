@@ -53,7 +53,7 @@ export default new Vuex.Store({
     transition: state => state.appConfig.transition,
     gameConfig: state => state.gameConfig,
     gameCategory: state => gameCategories.find(cat => cat.id === state.gameConfig.category),
-    activeTurn: state => state.gameTurns.find(turn => !turn.completed),
+    activeTurn: state => state.gameTurns.find(turn => turn.active),
     actingWord: state => state.actingWord,
   },
   mutations,

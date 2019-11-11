@@ -1,14 +1,18 @@
 <template>
   <div class="turn-score" :class="{ active: active }">
-    {{ this.score }}
+    <round-button :text="score" size="small" :muted="true" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import RoundButton from '../../global/RoundButton.vue';
 
 export default {
   name: 'TurnCount',
+  components: {
+    RoundButton,
+  },
   computed: {
     ...mapGetters([
       'activeTurn',

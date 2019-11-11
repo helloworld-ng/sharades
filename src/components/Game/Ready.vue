@@ -1,9 +1,7 @@
 <template>
-  <section class="frame" @click="start()">
+  <section class="frame">
     <header>
-      <span class="label">
-        Team {{ activeTurn.team }} &middot; Turn {{ activeTurn.count }}
-      </span>
+      <turn-description />
     </header>
     <article>
       <transition name="fade" mode="out-in">
@@ -12,18 +10,24 @@
       </transition>
     </article>
     <footer>
-      <span class="instructions" :class="{ hidden: countdownStarted }">
-        Tap screen to start
-      </span>
+      <div class="cta" :class="{ hidden: countdownStarted }">
+        <round-button text="Start" size="small" @click="start()" />
+      </div>
     </footer>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import RoundButton from '../global/RoundButton.vue';
+import TurnDescription from './Turn/TurnDescription.vue';
 
 export default {
   name: 'Ready',
+  components: {
+    RoundButton,
+    TurnDescription,
+  },
   data() {
     return {
       countdown: null,
@@ -62,18 +66,9 @@ export default {
 
 
 <style scoped lang="scss">
-@import '../../scss/colours';
-@import '../../scss/textstyles';
 @import '../../scss/layout/frame';
 
-.label {
-  color: $yellow;
-  @include header(5);
-}
-
-.instructions {
-  color: $mutedwhite;
-  transition: opacity 300ms;
+.cta {
   &.hidden {
     opacity: 0;
   }

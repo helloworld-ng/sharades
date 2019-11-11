@@ -1,12 +1,14 @@
 <template>
   <div class="game">
-    <component
-      :is="view"
-      @startTurn="setView('Turn')"
-      @turnEnded="setView('TurnStats')"
-      @ready="setView('Ready')"
-      @endGame="setView('GameStats')"
-    />
+    <transition :name="transitionName" mode="out-in">
+      <component
+        :is="view"
+        @startTurn="setView('Turn')"
+        @turnEnded="setView('TurnStats')"
+        @ready="setView('Ready')"
+        @endGame="setView('GameStats')"
+      />
+    </transition>
   </div>
 </template>
 
@@ -29,6 +31,17 @@ export default {
     return {
       view: 'Ready',
     };
+  },
+  computed: {
+    transitionName() {
+      const transitions = {
+        Ready: 'moveleft',
+        Turn: '',
+        TurnStats: 'fade',
+        GameStats: 'moveleft',
+      };
+      return transitions[this.view];
+    },
   },
   methods: {
     ...mapActions([
