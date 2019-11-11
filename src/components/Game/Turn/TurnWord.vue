@@ -34,6 +34,7 @@ export default {
   text-align: center;
   &__display {
     @include header(2);
+    line-height: 0.8;
     color: $yellow;
   }
 }

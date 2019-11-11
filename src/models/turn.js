@@ -5,6 +5,7 @@ export default function (team, count, duration) {
   this.completed = false;
   this.timeLeft = duration;
   this.correctGuesses = [];
+  this.words = [];
   this.countdownTurn = () => new Promise((resolve) => {
     this.started = true;
     const turnCounter = setInterval(() => {
@@ -18,5 +19,9 @@ export default function (team, count, duration) {
   });
   this.saveCorrectGuess = (word) => {
     this.correctGuesses.push(word);
+    this.saveWord(word);
+  };
+  this.saveWord = (word) => {
+    this.words.push(word);
   };
 }

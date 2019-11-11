@@ -40,6 +40,7 @@ export default new Vuex.Store({
     gameConfig,
     gameTurns: [],
     wordBank: [],
+    usedPile: [],
     discardPile: [],
     actingWord: null,
   },

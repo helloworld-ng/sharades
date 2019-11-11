@@ -24,6 +24,15 @@ export default {
   setActingWord(state, actingWord) {
     state.actingWord = actingWord;
   },
+  saveWordToTurn(state, turn) {
+    turn.saveWord(state.actingWord);
+  },
+  saveCorrectGuess(state, turn) {
+    turn.saveCorrectGuess(state.actingWord);
+  },
+  addToUsedPile(state, word) {
+    state.usedPile.push(word);
+  },
   addToDiscardPile(state, word) {
     state.discardPile.push(word);
   },

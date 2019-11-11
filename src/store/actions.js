@@ -34,8 +34,15 @@ export default {
       resolve();
     });
   },
-  saveCorrectGuess({ state, getters, dispatch }) {
-    getters.activeTurn.saveCorrectGuess(state.actingWord);
+  skipWord({ commit, dispatch, getters }, word) {
+    commit('saveWordToTurn', getters.activeTurn);
+    commit('addToUsedPile', word);
+    dispatch('changeActingWord');
+  },
+  correctlyGuessed({ commit, dispatch, getters }, word) {
+    commit('saveCorrectGuess', getters.activeTurn);
+    commit('addToUsedPile', word);
+    commit('addToDiscardPile', word);
     dispatch('changeActingWord');
   },
   async setActingWord({ state, commit, dispatch }) {
@@ -46,7 +53,6 @@ export default {
     commit('setActingWord', state.wordBank[randomIndex]);
   },
   changeActingWord({ state, commit, dispatch }) {
-    commit('addToDiscardPile', state.actingWord);
     commit('removeFromWordBank', state.actingWord);
     dispatch('setActingWord');
   },

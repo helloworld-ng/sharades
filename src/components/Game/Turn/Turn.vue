@@ -53,19 +53,19 @@ export default {
   methods: {
     ...mapActions([
       'playTurn',
-      'saveCorrectGuess',
-      'changeActingWord',
+      'correctlyGuessed',
+      'skipWord',
     ]),
     onDoubleTap() {
       if (this.activeTurn.started) {
-        this.saveCorrectGuess();
+        this.correctlyGuessed();
       } else {
         this.start();
       }
     },
     onSwipe(direction) {
       this.lastSwipeDirection = direction;
-      this.changeActingWord();
+      this.skipWord();
     },
   },
   async created() {
