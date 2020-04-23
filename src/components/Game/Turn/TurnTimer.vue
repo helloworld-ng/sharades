@@ -1,6 +1,6 @@
 <template>
   <div class="turn-timer" :class="{ active: activeTurn.started }">
-    <h5>{{ activeTurn.timeLeft }}</h5>
+    <h5>{{ timer }}</h5>
   </div>
 </template>
 
@@ -13,6 +13,9 @@ export default {
     ...mapGetters([
       'activeTurn',
     ]),
+    timer() {
+      return Math.max(this.activeTurn.timeLeft, 1);
+    },
   },
 };
 </script>
@@ -23,7 +26,7 @@ export default {
 .turn-timer {
   color: $offwhite;
   &.active {
-    color: $yellow;
+    color: white;
   }
 }
 </style>

@@ -5,11 +5,9 @@
        :animate="viewIs('Welcome')" @change="onAnimationChange" />
     </div>
     <main class="app__content">
-      <transition :name="transition">
-        <header class="app__header" v-if="!gameInProgress">
-          <wordmark :label="wordmarkLabel" :animate="viewIs('Welcome')" />
-        </header>
-      </transition>
+      <header class="app__header">
+        <wordmark :animate="viewIs('Welcome')" />
+      </header>
       <transition :name="transition" mode="out-in">
         <component :is="activeComponent" />
       </transition>
@@ -45,16 +43,6 @@ export default {
     ]),
     gameInProgress() {
       return this.activeComponent === 'Game';
-    },
-    wordmarkLabel() {
-      switch (this.activeComponent) {
-        case 'Category':
-          return 'Choose a category';
-        case 'Preferences':
-          return this.gameCategory.label;
-        default:
-          return 'Nigerian Charades';
-      }
     },
   },
   methods: {

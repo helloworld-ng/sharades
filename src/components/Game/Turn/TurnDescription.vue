@@ -16,3 +16,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+h5 {
+  color: white;
+}
+</style>

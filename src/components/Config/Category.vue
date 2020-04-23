@@ -1,5 +1,8 @@
 <template>
   <section id="choose-category" class="frame">
+    <header>
+      <div class="title">Choose a category</div>
+    </header>
     <article>
       <list :items="gameCategories" @click="setCategory" />
     </article>

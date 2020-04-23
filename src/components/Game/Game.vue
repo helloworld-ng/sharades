@@ -16,7 +16,7 @@
 import { mapActions } from 'vuex';
 import Ready from './Ready.vue';
 import Turn from './Turn/Turn.vue';
-import TurnStats from './Turn/Stats.vue';
+import TurnStats from './Turn/TurnStats.vue';
 import GameStats from './Stats.vue';
 
 export default {

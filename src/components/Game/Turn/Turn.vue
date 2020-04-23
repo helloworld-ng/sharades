@@ -17,7 +17,8 @@
       </article>
       <footer>
         <div>
-          <round-button text="Got it!" size="small" @click="onCorrectGuess" />
+          <round-button text="Skip" size="small" :outline="true" @click="onSkipWord" />
+          <round-button text="Got it!" size="small" :animate="true" @click="onCorrectGuess" />
         </div>
       </footer>
     </turn-stage>
@@ -81,5 +82,17 @@ export default {
 section {
   width: 100%;
   height: 100%;
+}
+footer {
+  div {
+    a {
+      &:first-child {
+        float: left;
+      }
+      &:last-child {
+        float: right;
+      }
+    }
+  }
 }
 </style>

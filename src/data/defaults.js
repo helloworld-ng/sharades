@@ -1,6 +1,6 @@
 export default {
-  // activeComponent: 'Welcome',
-  activeComponent: 'Preferences',
+  activeComponent: 'Welcome',
+  // activeComponent: 'Preferences',
   transition: 'moveleft',
   // category: null,
   category: 'nollywood',

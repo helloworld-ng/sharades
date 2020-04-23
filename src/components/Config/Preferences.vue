@@ -1,5 +1,8 @@
 <template>
   <section id="preferences" class="frame">
+    <header>
+      <div class="title">{{ gameCategory.label }}</div>
+    </header>
     <article>
       <ul class="preferences">
         <li>
@@ -41,6 +44,7 @@ export default {
       'gameDifficulties',
       'backgroundColour',
       'gameConfig',
+      'gameCategory',
     ]),
   },
   data() {

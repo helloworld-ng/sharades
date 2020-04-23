@@ -2,11 +2,7 @@
   <section id="turn-stats" class="frame">
     <header>
       <div>
-        <turn-description />
-        <h2>
-          <span>{{ activeTurn.correctGuesses.length }} </span>
-          <span>Words </span>
-        </h2>
+        <turn-result />
       </div>
     </header>
     <article class="scrollable">
@@ -29,13 +25,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import RoundButton from '../../global/RoundButton.vue';
-import TurnDescription from './TurnDescription.vue';
+import TurnResult from './TurnResult.vue';
 
 export default {
   name: 'TurnStats',
   components: {
     RoundButton,
-    TurnDescription,
+    TurnResult,
   },
   computed: {
     ...mapGetters([
@@ -86,6 +82,7 @@ ul {
     text-align: center;
     a {
       @include header(4);
+      color: white;
       &.muted {
         color: $mutedwhite;
       }
