@@ -6,14 +6,11 @@
     <article>
       <ul class="preferences">
         <li>
-          <number-picker label="Teams" v-model="teams" @input="updateGame('teams')" />
+          <number-picker :minValue="2" label="Teams" v-model="teams" @input="updateGame('teams')" />
         </li>
         <li>
-          <number-picker label="Turns" v-model="turnsPerTeam" @input="updateGame('turnsPerTeam')" />
-        </li>
-        <li>
-          <word-picker label="Mode" :options="gameDifficulties"
-           v-model="difficulty" @input="updateGame('difficulty')" />
+          <number-picker :minValue="2" label="Turns"
+           v-model="turnsPerTeam" @input="updateGame('turnsPerTeam')" />
         </li>
       </ul>
     </article>
@@ -29,14 +26,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import NumberPicker from '../global/Picker/NumberPicker.vue';
-import WordPicker from '../global/Picker/WordPicker.vue';
 import RoundButton from '../global/RoundButton.vue';
 
 export default {
   name: 'Preferences',
   components: {
     NumberPicker,
-    WordPicker,
     RoundButton,
   },
   computed: {
@@ -78,8 +73,9 @@ export default {
   margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   > li {
+    margin: 10px 0;
     text-align: center;
   }
 }
