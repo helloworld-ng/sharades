@@ -61,8 +61,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import '/scss/reset';
-@import '/scss/type';
-@import '/scss/layout/app';
-@import '/scss/animation';
+@import './scss/reset';
+@import './scss/type';
+@import './scss/layout/app';
+@import './scss/animation';
 </style>

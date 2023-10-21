@@ -1,13 +1,10 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import defaults from '../data/defaults';
 import animationSequence from '../data/animation-sequence';
 import gameCategories from '../data/game-categories';
 import gameDifficulties from '../data/game-difficulties';
 import mutations from './mutations';
 import actions from './actions';
-
-Vue.use(Vuex);
 
 const {
   activeComponent,
@@ -34,7 +31,7 @@ const gameConfig = {
   turnDuration,
 };
 
-export default new Vuex.Store({
+export default createStore({
   state: {
     appConfig,
     gameConfig,
